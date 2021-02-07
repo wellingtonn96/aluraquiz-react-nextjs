@@ -1,4 +1,3 @@
-import { create } from 'domain'
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
@@ -9,8 +8,9 @@ export default createGlobalStyle`
   }
 
   body {
-    background: #121214;
-    color: #e1e1e6;
+    background: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.contrastText};
+    font: 400 16px Roboto, sans-serif
   }
 `
 
