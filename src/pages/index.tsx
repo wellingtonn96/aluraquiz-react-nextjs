@@ -34,7 +34,7 @@ const Background = styled.div<IBackgroundProps>`
 
 const CardQuiz = styled.div`
   background-color: ${theme.colors.primary};
-  width: 300px;
+  width: 350px;
   margin-bottom: 20px;
   border: 1px solid ${theme.colors.mainBg};
   color: ${theme.colors.contrastText};

@@ -1,11 +1,10 @@
 export const UTILS = {
   bg: "https://miro.medium.com/max/875/1*htbUdWgFQ3a94PMEvBr_hQ.png",
-  title: "Quiz CSS da Alura",
-  description: "Teste os seus conhecimentos sobre CSS e vamos ver quantos layouts você vai deixar de quebrar",
+  title: "Quiz Nextjs",
+  description: "Teste os seus conhecimentos sobre o framework Nextjs",
   questions: [],
   external: [
-    "https://aluraquiz-css.omariosouto.vercel.app/",
-    "https://aluraquiz-devsoutinho.omariosouto.vercel.app/"
+
   ],
   theme: {
     colors: {
