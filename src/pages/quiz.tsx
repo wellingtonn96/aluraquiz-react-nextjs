@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { UTILS } from '../constants/utils'
-
+import { useRouter } from 'next/router'
 import styled, { css } from 'styled-components'
 import theme from '../styles/theme'
 
@@ -120,7 +120,10 @@ const Answer = styled.div<IAnswer>`
   }
 `
 
-const Home: React.FC = () => {
+const Home: React.FC<{
+  user: string
+}> = ({ user }) => {
+  const router = useRouter()
   const [selected, setSelected] = useState<number>(undefined)
   const [answer, setAnswer] = useState(undefined)
   const [question, setQuestion] = useState(0)
@@ -160,10 +163,13 @@ const Home: React.FC = () => {
           {question === UTILS.questions.length ? (
             <CardQuizContent>
               {rightAnswer > 3 ? (
-                <p>{`Parabéns você acertou ${rightAnswer}`}</p>
+                <p>{`Parabéns ${user} você acertou ${rightAnswer}`}</p>
               ) : (
                 <p>{`Você acertou apenas ${rightAnswer}`}</p>
               )}
+              <button onClick={() => router.push('/')}>
+                Voltar para a home
+              </button>
             </CardQuizContent>
           ) : (
             <>
@@ -192,3 +198,17 @@ const Home: React.FC = () => {
 }
 
 export default Home
+
+export async function getServerSideProps({
+  query,
+}: {
+  query: {
+    user: string
+  }
+}) {
+  return {
+    props: {
+      user: query.user,
+    },
+  }
+}
