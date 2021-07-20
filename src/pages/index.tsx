@@ -4,10 +4,10 @@ import Head from 'next/head'
 import { UTILS } from '../constants/utils'
 
 import styled from 'styled-components'
-import theme from '../styles/theme';
+import theme from '../styles/theme'
 
 interface IBackgroundProps {
-  background: string;
+  background: string
 }
 
 const Background = styled.div<IBackgroundProps>`
@@ -51,7 +51,7 @@ const CardQuizContent = styled.div`
     width: 100%;
     height: 40px;
     background: transparent;
-    border:1px solid ${theme.colors.mainBg};
+    border: 1px solid ${theme.colors.mainBg};
     color: ${theme.colors.contrastText};
     padding: 0 10px;
     font-size: 18px;
@@ -80,7 +80,7 @@ const Home: React.FC = () => {
             <p>NextJs Quiz</p>
           </HeaderCardQuiz>
           <CardQuizContent>
-            <input type="text"/>
+            <input type="text" />
             <button>jogar</button>
           </CardQuizContent>
         </CardQuiz>
@@ -88,8 +88,7 @@ const Home: React.FC = () => {
           <HeaderCardQuiz>
             <p>Quiz da galera!</p>
           </HeaderCardQuiz>
-          <CardQuizContent>
-          </CardQuizContent>
+          <CardQuizContent></CardQuizContent>
         </CardQuiz>
       </div>
     </Background>
