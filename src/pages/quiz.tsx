@@ -2,123 +2,9 @@ import React, { useState } from 'react'
 
 import { UTILS } from '../constants/utils'
 import { useRouter } from 'next/router'
-import styled, { css } from 'styled-components'
-import theme from '../styles/theme'
-
-interface IBackgroundProps {
-  background: string
-}
-
-const Background = styled.div<IBackgroundProps>`
-  font-size: 16px;
-  background: url(${({ background }) => background});
-  min-height: 100vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: fixed;
-  width: 100%;
-  margin: 0 auto;
-
-  > div {
-    max-width: 980px;
-    height: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    padding: 80px 20px;
-  }
-`
-
-const CardQuiz = styled.div`
-  background-color: ${theme.colors.primary};
-  width: 350px;
-  margin-bottom: 20px;
-  border: 1px solid ${theme.colors.mainBg};
-  color: ${theme.colors.contrastText};
-  border-radius: 5px;
-`
-const HeaderCardQuiz = styled.div`
-  background-color: ${theme.colors.mainBg};
-  padding: 15px;
-`
-const CardQuizContent = styled.div`
-  padding: 35px;
-
-  input {
-    width: 100%;
-    height: 40px;
-    background: transparent;
-    border: 1px solid ${theme.colors.mainBg};
-    color: ${theme.colors.contrastText};
-    padding: 0 10px;
-    font-size: 18px;
-  }
-
-  p {
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  span {
-    opacity: 0.5;
-  }
-
-  button {
-    background-color: ${theme.colors.contrastText};
-    border-radius: 5px;
-    width: 100%;
-    height: 40px;
-    text-transform: uppercase;
-    margin-top: 35px;
-    border: 0;
-    outline: 0;
-    font-weight: bold;
-
-    &:hover {
-      opacity: 0.7;
-    }
-  }
-`
-
-interface IAnswer {
-  selected?: boolean
-  answer: string | undefined
-}
-
-const Answer = styled.div<IAnswer>`
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  padding: 10px 20px;
-  ${({ answer, selected }) =>
-    answer && selected
-      ? css`
-          background-color: ${answer};
-        `
-      : css`
-          background-color: ${theme.colors.secondary};
-        `}
-  color: ${theme.colors.primary};
-  width: 100%;
-  margin-top: 15px;
-  border: 0;
-  outline: 0;
-  font-weight: bold;
-  ${({ selected }) =>
-    selected
-      ? css`
-          opacity: 1;
-        `
-      : css`
-          opacity: 0.4;
-        `}
-
-  &:hover {
-    opacity: 1;
-  }
-`
+import { Background } from '../components/Background/style'
+import CardQuiz from '../components/CardQuiz'
+import { Answer, CardQuizContent } from '../styles/quiz.styles'
 
 const Home: React.FC<{
   user: string
@@ -149,17 +35,13 @@ const Home: React.FC<{
   return (
     <Background background={UTILS.bg}>
       <div>
-        <CardQuiz>
-          <HeaderCardQuiz>
-            {question === UTILS.questions.length ? (
-              <p>{`Você acertou ${rightAnswer} de ${UTILS.questions.length}`}</p>
-            ) : (
-              <p>{` < Pergunta ${question + 1} de ${
-                UTILS.questions.length
-              }`}</p>
-            )}
-          </HeaderCardQuiz>
-
+        <CardQuiz
+          header={
+            question === UTILS.questions.length
+              ? `Você acertou ${rightAnswer} de ${UTILS.questions.length}`
+              : `< Pergunta ${question + 1} de ${UTILS.questions.length}`
+          }
+        >
           {question === UTILS.questions.length ? (
             <CardQuizContent>
               {rightAnswer > 3 ? (
@@ -176,17 +58,26 @@ const Home: React.FC<{
               <CardQuizContent>
                 <p>{questions.title}</p>
                 <span>{questions.description}</span>
-                {questions.alternatives
-                  .sort((item, index) => item[index] - item[index])
-                  .map((item, index) => (
-                    <Answer
-                      selected={index === selected}
-                      answer={answer && answer}
-                      onClick={() => setSelected(answer ? selected : index)}
-                    >
-                      {item}
-                    </Answer>
-                  ))}
+                {questions.alternatives.map((item, index) => (
+                  <Answer
+                    selected={index === selected}
+                    answer={answer && answer}
+                    onClick={() => setSelected(answer ? selected : index)}
+                  >
+                    {item}
+                  </Answer>
+                ))}
+
+                {answer && (
+                  <>
+                    {selected === questions.answer ? (
+                      <p className="rightAnswer">{`😃 você acertou!`}</p>
+                    ) : (
+                      <p className="rightAnswer">{`😞 você errou!`}</p>
+                    )}
+                  </>
+                )}
+
                 <button onClick={handleAnswerConfirm}>Confirmar</button>
               </CardQuizContent>
             </>

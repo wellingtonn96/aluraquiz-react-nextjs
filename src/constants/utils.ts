@@ -2,6 +2,7 @@
 export const UTILS = {
   bg: "https://cutewallpaper.org/21/javascript-wallpaper/JavaScript-Wallpapers-Wallpaper-Cave.jpg",
   title: "Quiz Nextjs",
+  github: "https://github.com/wellingtonn96/aluraquiz-react-nextjs",
   description: "Teste os seus conhecimentos sobre o framework Nextjs",
   questions: [
     {
