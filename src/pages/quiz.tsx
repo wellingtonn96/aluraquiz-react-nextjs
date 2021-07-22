@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 
 import { UTILS } from '../constants/utils'
 import { useRouter } from 'next/router'
-import { Background } from '../components/Background/style'
+import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
 import { Answer, CardQuizContent } from '../styles/quiz.styles'
 
-const Home: React.FC<{
+const Quiz: React.FC<{
   user: string
 }> = ({ user }) => {
   const router = useRouter()
@@ -33,62 +33,58 @@ const Home: React.FC<{
   }
 
   return (
-    <Background background={UTILS.bg}>
-      <div>
-        <CardQuiz
-          header={
-            question === UTILS.questions.length
-              ? `Você acertou ${rightAnswer} de ${UTILS.questions.length}`
-              : `< Pergunta ${question + 1} de ${UTILS.questions.length}`
-          }
-        >
-          {question === UTILS.questions.length ? (
+    <Layout>
+      <CardQuiz
+        header={
+          question === UTILS.questions.length
+            ? `Você acertou ${rightAnswer} de ${UTILS.questions.length}`
+            : `< Pergunta ${question + 1} de ${UTILS.questions.length}`
+        }
+      >
+        {question === UTILS.questions.length ? (
+          <CardQuizContent>
+            {rightAnswer > 3 ? (
+              <p>{`Parabéns ${user} você acertou ${rightAnswer}`}</p>
+            ) : (
+              <p>{`Você acertou apenas ${rightAnswer}`}</p>
+            )}
+            <button onClick={() => router.push('/')}>Voltar para a home</button>
+          </CardQuizContent>
+        ) : (
+          <>
             <CardQuizContent>
-              {rightAnswer > 3 ? (
-                <p>{`Parabéns ${user} você acertou ${rightAnswer}`}</p>
-              ) : (
-                <p>{`Você acertou apenas ${rightAnswer}`}</p>
+              <p>{questions.title}</p>
+              <span>{questions.description}</span>
+              {questions.alternatives.map((item, index) => (
+                <Answer
+                  selected={index === selected}
+                  answer={answer && answer}
+                  onClick={() => setSelected(answer ? selected : index)}
+                >
+                  {item}
+                </Answer>
+              ))}
+
+              {answer && (
+                <>
+                  {selected === questions.answer ? (
+                    <p className="rightAnswer">{`😃 você acertou!`}</p>
+                  ) : (
+                    <p className="rightAnswer">{`😞 você errou!`}</p>
+                  )}
+                </>
               )}
-              <button onClick={() => router.push('/')}>
-                Voltar para a home
-              </button>
+
+              <button onClick={handleAnswerConfirm}>Confirmar</button>
             </CardQuizContent>
-          ) : (
-            <>
-              <CardQuizContent>
-                <p>{questions.title}</p>
-                <span>{questions.description}</span>
-                {questions.alternatives.map((item, index) => (
-                  <Answer
-                    selected={index === selected}
-                    answer={answer && answer}
-                    onClick={() => setSelected(answer ? selected : index)}
-                  >
-                    {item}
-                  </Answer>
-                ))}
-
-                {answer && (
-                  <>
-                    {selected === questions.answer ? (
-                      <p className="rightAnswer">{`😃 você acertou!`}</p>
-                    ) : (
-                      <p className="rightAnswer">{`😞 você errou!`}</p>
-                    )}
-                  </>
-                )}
-
-                <button onClick={handleAnswerConfirm}>Confirmar</button>
-              </CardQuizContent>
-            </>
-          )}
-        </CardQuiz>
-      </div>
-    </Background>
+          </>
+        )}
+      </CardQuiz>
+    </Layout>
   )
 }
 
-export default Home
+export default Quiz
 
 export async function getServerSideProps({
   query,

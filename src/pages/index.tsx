@@ -1,9 +1,8 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { UTILS } from '../constants/utils'
 import styled from 'styled-components'
 import theme from '../styles/theme'
-import { Background } from '../components/Background/style'
+import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
 
 const CardQuizContent = styled.div`
@@ -44,21 +43,19 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Background background={UTILS.bg}>
-      <div>
-        <CardQuiz header="NextJs Quiz">
-          <CardQuizContent>
-            <form onSubmit={handleSubmit}>
-              <input type="text" onChange={e => setUser(e.target.value)} />
-              <button type="submit">jogar</button>
-            </form>
-          </CardQuizContent>
-        </CardQuiz>
-        <CardQuiz header="Quiz da galera!">
-          <CardQuizContent></CardQuizContent>
-        </CardQuiz>
-      </div>
-    </Background>
+    <Layout>
+      <CardQuiz header="NextJs Quiz">
+        <CardQuizContent>
+          <form onSubmit={handleSubmit}>
+            <input type="text" onChange={e => setUser(e.target.value)} />
+            <button type="submit">jogar</button>
+          </form>
+        </CardQuizContent>
+      </CardQuiz>
+      <CardQuiz header="Quiz da galera!">
+        <CardQuizContent></CardQuizContent>
+      </CardQuiz>
+    </Layout>
   )
 }
 
