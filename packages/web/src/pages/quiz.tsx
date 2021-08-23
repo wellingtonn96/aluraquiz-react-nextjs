@@ -7,22 +7,26 @@ import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
 import { Answer, CardQuizContent } from '../styles/quiz.styles'
 import { ButtonStyled } from '../components/Button/styled'
+import { useEffect } from 'react'
 
 const Quiz: React.FC<{
   user: string
   data: any
 }> = ({ user, data }) => {
   const router = useRouter()
+  const [dataQuiz, setDataQuiz] = useState(undefined)
   const [selected, setSelected] = useState<number>(undefined)
   const [answer, setAnswer] = useState(undefined)
   const [question, setQuestion] = useState(0)
   const [rightAnswer, setRightAnser] = useState(0)
 
-  const questions = data.questions[question]
+  const questions = dataQuiz && dataQuiz.questions[question]
 
-  const indexRightAnswer = data.questions[question].alternatives.findIndex(
-    item => item === data.questions[question].answer
-  )
+  const indexRightAnswer =
+    questions &&
+    dataQuiz.questions[question].alternatives.findIndex(
+      item => item === dataQuiz.questions[question].answer
+    )
 
   function handleAnswerConfirm() {
     setAnswer(
@@ -30,9 +34,10 @@ const Quiz: React.FC<{
         ? UTILS.theme.colors.success
         : UTILS.theme.colors.wrong
     )
+
     selected === indexRightAnswer && setRightAnser(state => state + 1)
 
-    question !== UTILS.questions.length &&
+    question !== dataQuiz.questions.length &&
       setTimeout(() => {
         setQuestion(state => state + 1)
         setAnswer(undefined)
@@ -40,60 +45,79 @@ const Quiz: React.FC<{
       }, 1000)
   }
 
+  useEffect(() => {
+    data.questions.length > 0 && setDataQuiz(data)
+  }, [])
+
   return (
-    <Layout>
-      <CardQuiz
-        background={UTILS.bg}
-        header={
-          question === UTILS.questions.length
-            ? `Você acertou ${rightAnswer} de ${UTILS.questions.length}`
-            : `< Pergunta ${question + 1} de ${UTILS.questions.length}`
-        }
-      >
-        {question === UTILS.questions.length ? (
-          <CardQuizContent>
-            {rightAnswer > 3 ? (
-              <p>{`Parabéns ${user} você acertou ${rightAnswer}`}</p>
+    <>
+      {dataQuiz ? (
+        <Layout background={data.img_bg_url}>
+          <CardQuiz
+            background={data.img_bg_url}
+            header={
+              question === dataQuiz.questions.length
+                ? `Você acertou ${rightAnswer} de ${dataQuiz.questions.length}`
+                : `< Pergunta ${question + 1} de ${dataQuiz.questions.length}`
+            }
+          >
+            {question === dataQuiz.questions.length ? (
+              <CardQuizContent>
+                {rightAnswer > 3 ? (
+                  <p>{`Parabéns ${user} você acertou ${rightAnswer}`}</p>
+                ) : (
+                  <p>{`Você acertou apenas ${rightAnswer}`}</p>
+                )}
+                <ButtonStyled onClick={() => router.push('/')}>
+                  Voltar para a home
+                </ButtonStyled>
+              </CardQuizContent>
             ) : (
-              <p>{`Você acertou apenas ${rightAnswer}`}</p>
+              <>
+                <CardQuizContent>
+                  <p>{questions.title}</p>
+                  <span>{questions.description}</span>
+                  {questions.alternatives.map((item, index) => (
+                    <Answer
+                      selected={index === selected}
+                      answer={answer && answer}
+                      onClick={() => setSelected(answer ? selected : index)}
+                    >
+                      {item}
+                    </Answer>
+                  ))}
+
+                  {answer && (
+                    <>
+                      {selected === indexRightAnswer ? (
+                        <p className="rightAnswer">{`😃 você acertou!`}</p>
+                      ) : (
+                        <p className="rightAnswer">{`😞 você errou!`}</p>
+                      )}
+                    </>
+                  )}
+
+                  <ButtonStyled onClick={handleAnswerConfirm}>
+                    Confirmar
+                  </ButtonStyled>
+                </CardQuizContent>
+              </>
             )}
+          </CardQuiz>
+        </Layout>
+      ) : (
+        <Layout background={data.img_bg_url}>
+          <CardQuiz
+            background={data.bg_img_url}
+            header="Este quiz não possui questões!"
+          >
             <ButtonStyled onClick={() => router.push('/')}>
               Voltar para a home
             </ButtonStyled>
-          </CardQuizContent>
-        ) : (
-          <>
-            <CardQuizContent>
-              <p>{questions.title}</p>
-              <span>{questions.description}</span>
-              {questions.alternatives.map((item, index) => (
-                <Answer
-                  selected={index === selected}
-                  answer={answer && answer}
-                  onClick={() => setSelected(answer ? selected : index)}
-                >
-                  {item}
-                </Answer>
-              ))}
-
-              {answer && (
-                <>
-                  {selected === indexRightAnswer ? (
-                    <p className="rightAnswer">{`😃 você acertou!`}</p>
-                  ) : (
-                    <p className="rightAnswer">{`😞 você errou!`}</p>
-                  )}
-                </>
-              )}
-
-              <ButtonStyled onClick={handleAnswerConfirm}>
-                Confirmar
-              </ButtonStyled>
-            </CardQuizContent>
-          </>
-        )}
-      </CardQuiz>
-    </Layout>
+          </CardQuiz>
+        </Layout>
+      )}
+    </>
   )
 }
 
@@ -103,13 +127,11 @@ export async function getServerSideProps({
   query,
 }: {
   query: {
-    user: string
+    id: string
   }
 }) {
   try {
-    const response = await axios.get(
-      'http://localhost:3333/quiz/f87c0d5a-645b-441b-955c-bb3e1200bad0'
-    )
+    const response = await axios.get(`http://localhost:3333/quiz/${query.id}`)
 
     const data = response.data
 
@@ -117,7 +139,7 @@ export async function getServerSideProps({
 
     return {
       props: {
-        user: query.user,
+        user: query.id,
         data,
       },
     }

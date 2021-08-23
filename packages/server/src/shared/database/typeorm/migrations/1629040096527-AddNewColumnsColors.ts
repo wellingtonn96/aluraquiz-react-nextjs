@@ -44,10 +44,6 @@ export class AddNewColumnsColors1629040096527 implements MigrationInterface {
             default: 'NULL',
           },
           {
-            name: 'quizId',
-            type: 'uuid',
-          },
-          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

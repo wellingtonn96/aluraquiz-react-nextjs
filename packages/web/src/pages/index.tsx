@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
@@ -33,58 +33,48 @@ const ButtonNewQuizContainer = styled.div`
   }
 `
 
-const Home: React.FC = () => {
+interface IPropsHome {
+  quizes: any[]
+}
+
+const Home: React.FC<IPropsHome> = ({ quizes }) => {
   const router = useRouter()
   // const [user, setUser] = React.useState<string>()
 
-  function handleSubmit() {
-    return router.push(`quiz/?user=`)
+  function handleSubmit(id: string) {
+    return router.push(`quiz/?id=${id}`)
   }
 
   return (
-    <Layout>
+    <Layout background={UTILS.bg}>
       <ButtonNewQuizContainer>
         <button onClick={() => router.push('/create-quiz')}>Novo quiz</button>
       </ButtonNewQuizContainer>
       <HomeContainer>
-        <CardQuiz header="NextJs Quiz" background={UTILS.bg}>
-          <p>{UTILS.title}</p>
-          <span>{UTILS.description}</span>
-          <ButtonStyled onClick={handleSubmit} type="button">
-            Responda o quiz
-          </ButtonStyled>
-        </CardQuiz>
-        <CardQuiz header="NextJs Quiz" background={UTILS.bg}>
-          <p>{UTILS.title}</p>
-          <span>{UTILS.description}</span>
-          <ButtonStyled onClick={handleSubmit} type="button">
-            Responda o quiz
-          </ButtonStyled>
-        </CardQuiz>
-        <CardQuiz header="NextJs Quiz" background={UTILS.bg}>
-          <p>{UTILS.title}</p>
-          <span>{UTILS.description}</span>
-          <ButtonStyled onClick={handleSubmit} type="button">
-            Responda o quiz
-          </ButtonStyled>
-        </CardQuiz>
-        <CardQuiz header="NextJs Quiz" background={UTILS.bg}>
-          <p>{UTILS.title}</p>
-          <span>{UTILS.description}</span>
-          <ButtonStyled onClick={handleSubmit} type="button">
-            Responda o quiz
-          </ButtonStyled>
-        </CardQuiz>
-        <CardQuiz header="NextJs Quiz" background={UTILS.bg}>
-          <p>{UTILS.title}</p>
-          <span>{UTILS.description}</span>
-          <ButtonStyled onClick={handleSubmit} type="button">
-            Responda o quiz
-          </ButtonStyled>
-        </CardQuiz>
+        {quizes.map(item => (
+          <CardQuiz header="NextJs Quiz" background={item.img_bg_url}>
+            <p>{item.title}</p>
+            <span>{item.description}</span>
+            <ButtonStyled onClick={() => handleSubmit(item.id)} type="button">
+              Responda o quiz
+            </ButtonStyled>
+          </CardQuiz>
+        ))}
       </HomeContainer>
     </Layout>
   )
 }
 
 export default Home
+
+export async function getServerSideProps() {
+  const res = await fetch('http://localhost:3333/quiz')
+
+  const response = await res.json()
+
+  return {
+    props: {
+      quizes: response,
+    },
+  }
+}

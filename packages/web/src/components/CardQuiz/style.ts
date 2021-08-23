@@ -22,6 +22,7 @@ export const Container = styled.div<IPropsCardQuiz>`
     css`
       > div.img-cover {
         background: url(${props.background});
+
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;

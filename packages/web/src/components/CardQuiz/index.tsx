@@ -6,7 +6,7 @@ const CardQuiz: React.FC<{
   width?: string
 }> = ({ children, header, background, width }) => {
   return (
-    <Container background={background} width={width}>
+    <Container background={background} width={width} theme={undefined}>
       <HeaderCardQuiz>
         <p>{header}</p>
       </HeaderCardQuiz>

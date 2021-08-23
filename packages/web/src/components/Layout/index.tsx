@@ -2,9 +2,9 @@ import React from 'react'
 import { UTILS } from '../../constants/utils'
 import { Background } from './style'
 
-const Layout: React.FC = ({ children }) => {
+const Layout: React.FC<{ background: string }> = ({ children, background }) => {
   return (
-    <Background background={UTILS.bg}>
+    <Background background={background}>
       <div>{children}</div>
     </Background>
   )

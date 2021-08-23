@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
 import styled from 'styled-components'
-import { FaCheck, FaPlus, FaTrash } from 'react-icons/fa'
+import { FaCheck, FaPlus } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
@@ -9,6 +8,7 @@ import { ButtonStyled } from '../components/Button/styled'
 import theme from '../styles/theme'
 import { useRouter } from 'next/router'
 import api from '../services/api'
+import { UTILS } from '../constants/utils'
 
 interface IPropsCreateQuiz {
   indexRightAnswer?: number
@@ -104,7 +104,29 @@ const CreateQuiz: React.FC = () => {
   const [indexRightAnswer, setIndexRightAnswer] = useState(undefined)
   const [rightAnswer, setRightAnswer] = useState(undefined)
 
-  const { handleSubmit, register, reset } = useForm()
+  const {
+    handleSubmit: handleSubmitTheme,
+    register: registerTheme,
+    reset: resetTheme,
+  } = useForm({
+    mode: 'onBlur',
+  })
+
+  const {
+    handleSubmit: handleSubmitQuiz,
+    register: registerQuiz,
+    reset: resetQuiz,
+  } = useForm({
+    mode: 'onBlur',
+  })
+
+  const {
+    handleSubmit: handleSubmitQuestion,
+    register: registerQuestion,
+    reset: resetQuestion,
+  } = useForm({
+    mode: 'onBlur',
+  })
 
   function addMoreOption() {
     const lastItemArray = option[option.length - 1].split(' ')
@@ -115,36 +137,36 @@ const CreateQuiz: React.FC = () => {
   }
 
   function handleChangeStep(step: number) {
-    reset()
     setStep(step)
   }
 
-  const handleSubmitFormQuiz = async data => {
+  const handleSubmitFormQuiz = async dataQuiz => {
     try {
       const response = await api.post('quiz', {
-        title: data.title_quiz,
-        description: data.description_quiz,
-        img_bg_url: data.img_bg_url,
+        title: dataQuiz.title_quiz,
+        description: dataQuiz.description_quiz,
+        img_bg_url: dataQuiz.img_bg_url,
       })
 
       const { id } = response.data
 
       setIdQuiz(id)
+      resetQuiz()
       handleChangeStep(2)
     } catch (error) {
       return console.log(error)
     }
   }
 
-  const handleSubmitFormTheme = async data => {
+  const handleSubmitFormTheme = async dataTheme => {
     try {
       const response = await api.post('themeQuiz', {
-        primary: data.primary,
-        mainBg: data.mainBg,
-        wrong: data.wrong,
-        success: data.success,
-        contrastText: data.contrastText,
-        secondary: data.secondary,
+        primary: dataTheme.primary,
+        mainBg: dataTheme.mainBg,
+        wrong: dataTheme.wrong,
+        success: dataTheme.success,
+        contrastText: dataTheme.contrastText,
+        secondary: dataTheme.secondary,
       })
 
       const { id } = response.data
@@ -153,29 +175,30 @@ const CreateQuiz: React.FC = () => {
         themeId: id,
       })
 
+      resetTheme()
       handleChangeStep(3)
     } catch (error) {
       return console.log(error)
     }
   }
 
-  const handleSubmitFormQuestions = async (data: any) => {
+  const handleSubmitFormQuestions = async dataQuestion => {
     try {
       if (rightAnswer) {
         await api.post('question', {
           image_url:
             'https://thumbs.gfycat.com/IncredibleGrouchyEarwig-size_restricted.gif',
-          title: data.title_question,
-          description: data.description_question,
-          answer: data[rightAnswer],
-          alternatives: Object.values(data).slice(2),
+          title: dataQuestion.title_question,
+          description: dataQuestion.description_question,
+          answer: dataQuestion[rightAnswer],
+          alternatives: Object.values(dataQuestion).slice(2),
           quizId: idQuiz,
         })
       }
 
       setIndexRightAnswer(undefined)
       setOption(['option 1', 'option 2'])
-      reset()
+      resetQuestion()
       handleChangeStep(3)
     } catch (error) {
       return console.log(error)
@@ -183,26 +206,30 @@ const CreateQuiz: React.FC = () => {
   }
 
   function handleRightAnswer(index: number) {
-    setRightAnswer(`option_${index + 1}`)
+    setRightAnswer(`option_${index}`)
     setIndexRightAnswer(index)
   }
 
   return (
-    <Layout>
+    <Layout background={UTILS.bg}>
       <CreateQuizContainer>
         {step === 1 && (
           <CardQuiz header="Adicione um novo quiz" width="450px">
-            <form onSubmit={handleSubmit(handleSubmitFormQuiz)} action="">
+            <form
+              key={1}
+              onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)}
+              action=""
+            >
               <input
-                {...register('title_quiz', { required: true })}
+                {...registerQuiz('title_quiz', { required: true })}
                 placeholder="Titulo"
               />
               <input
-                {...register('img_bg_url', { required: true })}
+                {...registerQuiz('img_bg_url', { required: true })}
                 placeholder="URL da imagem de fundo"
               />
               <textarea
-                {...register('description_quiz', { required: true })}
+                {...registerQuiz('description_quiz', { required: true })}
                 placeholder="Descrição"
               ></textarea>
               <ButtonStyled type="submit">Criar quiz</ButtonStyled>
@@ -211,51 +238,57 @@ const CreateQuiz: React.FC = () => {
         )}
         {step === 2 && (
           <CardQuiz header="Crie o tema do quiz" width="450px">
-            <form onSubmit={handleSubmit(handleSubmitFormTheme)}>
+            <form key={2} onSubmit={handleSubmitTheme(handleSubmitFormTheme)}>
               <input
-                {...register('primary', { required: true })}
+                {...registerTheme('primary', { required: true })}
                 placeholder="Cor primária"
               />
               <input
-                {...register('secondary', { required: true })}
+                {...registerTheme('secondary', { required: true })}
                 placeholder="Cor secondaria"
               />
               <input
-                {...register('mainBg', { required: true })}
+                {...registerTheme('mainBg', { required: true })}
                 placeholder="Cor de fundo"
               />
               <input
-                {...register('contrastText', { required: true })}
+                {...registerTheme('contrastText', { required: true })}
                 placeholder="Cor de contraste do texto"
               />
               <input
-                {...register('success', { required: true })}
+                {...registerTheme('success', { required: true })}
                 placeholder="Cor de sucesso"
               />
               <input
-                {...register('wrong', { required: true })}
+                {...registerTheme('wrong', { required: true })}
                 placeholder="Cor de erro"
               />
               <ButtonStyled type="submit">Criar tema</ButtonStyled>
             </form>
           </CardQuiz>
         )}
+
         {step === 3 && (
           <CardQuiz header="Criar questões" width="450px">
-            <form onSubmit={handleSubmit(handleSubmitFormQuestions)}>
+            <form
+              key={3}
+              onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}
+            >
               <input
-                {...register('title_question', { required: true })}
+                {...registerQuestion('title_question', { required: true })}
                 placeholder="Titulo"
               />
               <input
-                {...register('description_question', { required: true })}
+                {...registerQuestion('description_question', {
+                  required: true,
+                })}
                 placeholder="Descrição"
               />
               <div>
                 {option.map((item, index) => (
                   <div className="options">
                     <input
-                      {...register(`${item.replace(' ', '_')}`, {
+                      {...registerQuestion(`option_${index}`, {
                         required: true,
                       })}
                       placeholder={`Opção ${index + 1}`}
@@ -273,12 +306,6 @@ const CreateQuiz: React.FC = () => {
                         }
                       />
                     </button>
-                    {/* <button
-                      type="button"
-                      onClick={() => setIndexRightAnswer(index)}
-                    >
-                      <FaTrash size={18} />
-                    </button> */}
                   </div>
                 ))}
 
