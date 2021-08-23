@@ -288,7 +288,7 @@ const CreateQuiz: React.FC = () => {
                 {option.map((item, index) => (
                   <div className="options">
                     <input
-                      {...registerQuestion(`option_${index}`, {
+                      {...registerQuestion(`option_${index}` as any, {
                         required: true,
                       })}
                       placeholder={`Opção ${index + 1}`}

@@ -6,7 +6,6 @@ import { ThemeProvider } from 'styled-components'
 import GithubCorner from 'react-github-corner'
 import theme from '../styles/theme'
 import { UTILS } from '../constants/utils'
-import { Head } from 'next/document'
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
