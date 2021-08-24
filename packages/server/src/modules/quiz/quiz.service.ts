@@ -3,7 +3,6 @@ import { CreateQuizDto } from './dto/createQuiz.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Quiz } from './entities/Quiz';
 import { QuizRepository } from './quiz.repository';
-import { ThemeQuizRepository } from '../theme/theme.repository';
 
 export interface IQuiz {
   id: string;
