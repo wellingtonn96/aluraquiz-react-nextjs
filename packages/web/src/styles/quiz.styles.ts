@@ -11,6 +11,14 @@ export const CardQuizContent = styled.div`
 interface IAnswer {
   selected?: boolean
   answer: string | undefined
+  themeCustom?: {
+    primary?: string
+    secondary?: string
+    mainBg?: string
+    contrastText?: string
+    wrong?: string
+    success?: string
+  }
 }
 
 export const Answer = styled.div<IAnswer>`
@@ -18,15 +26,18 @@ export const Answer = styled.div<IAnswer>`
   align-items: center;
   border-radius: 5px;
   padding: 10px 20px;
-  ${({ answer, selected }) =>
+  ${({ answer, selected, themeCustom }) =>
     answer && selected
       ? css`
           background-color: ${answer};
         `
       : css`
-          background-color: ${theme.colors.secondary};
+          background-color: ${themeCustom
+            ? themeCustom.contrastText
+            : theme.colors.contrastText};
         `}
-  color: ${theme.colors.primary};
+  color: ${props =>
+    props.themeCustom ? props.themeCustom.primary : theme.colors.primary};
   width: 100%;
   margin-top: 15px;
   border: 0;

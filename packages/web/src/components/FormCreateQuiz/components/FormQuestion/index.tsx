@@ -7,6 +7,8 @@ import theme from '../../../../styles/theme'
 import { useRouter } from 'next/router'
 import api from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
+import { Background } from '../../../Layout/style'
+import { UTILS } from '../../../../constants/utils'
 
 const FormQuestion: React.FC = () => {
   const router = useRouter()
@@ -46,6 +48,7 @@ const FormQuestion: React.FC = () => {
       }
 
       setIndexRightAnswer(undefined)
+      setRightAnswer(undefined)
       setOption(['option 1', 'option 2'])
       resetQuestion()
       setQuizContext({
@@ -98,14 +101,19 @@ const FormQuestion: React.FC = () => {
                   style={
                     index === indexRightAnswer
                       ? { color: theme.colors.success }
-                      : { opacity: '0.5' }
+                      : { color: theme.colors.contrastText, opacity: '0.5' }
                   }
                 />
               </button>
             </div>
           ))}
 
-          <button onClick={addMoreOption} className="moreOptions" type="button">
+          <button
+            style={{ color: UTILS.theme.colors.contrastText }}
+            onClick={addMoreOption}
+            className="moreOptions"
+            type="button"
+          >
             <FaPlus size={20} />
             adicionar opção
           </button>

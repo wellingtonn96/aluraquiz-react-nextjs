@@ -1,12 +1,34 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface IBackgroundProps {
-  background: string
+  background?: string
 }
 
 export const Background = styled.div<IBackgroundProps>`
+  background: #0f0c29;
+  ${props =>
+    props.background
+      ? css`
+          background-image: url(${({ background }: { background: string }) =>
+            background});
+        `
+      : css`
+          background: #0f0c29; /* fallback for old browsers */
+          background: -webkit-linear-gradient(
+            to right,
+            #0f0c29,
+            #302b63,
+            #24243e
+          ); /* Chrome 10-25, Safari 5.1-6 */
+          background: linear-gradient(
+            to right,
+            #0f0c29,
+            #302b63,
+            #24243e
+          ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7*/
+        `}
+
   font-size: 16px;
-  background: url(${({ background }) => background});
   min-height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;

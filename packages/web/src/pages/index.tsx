@@ -18,26 +18,13 @@ const ButtonNewQuizContainer = styled.div`
   padding: 40px 0;
   display: flex;
   flex-direction: row-reverse;
-
-  button {
-    background-color: ${theme.colors.contrastText};
-    padding: 10px 20px;
-    border: 0;
-    border-radius: 5px;
-    text-transform: uppercase;
-    font-weight: bold;
-
-    &:hover {
-      opacity: 0.5;
-    }
-  }
 `
 
 interface IPropsHome {
   quizes: any[]
 }
 
-const Home: React.FC<IPropsHome> = ({ quizes }) => {
+const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
   const router = useRouter()
   // const [user, setUser] = React.useState<string>()
 
@@ -46,13 +33,15 @@ const Home: React.FC<IPropsHome> = ({ quizes }) => {
   }
 
   return (
-    <Layout background={UTILS.bg}>
+    <Layout>
       <ButtonNewQuizContainer>
-        <button onClick={() => router.push('/create-quiz')}>Novo quiz</button>
+        <ButtonStyled onClick={() => router.push('/create-quiz')} width="160px">
+          Novo quiz
+        </ButtonStyled>
       </ButtonNewQuizContainer>
       <HomeContainer>
         {quizes.map(item => (
-          <CardQuiz header="NextJs Quiz" background={item.img_bg_url}>
+          <CardQuiz header={item.title} background={item.img_bg_url}>
             <p>{item.title}</p>
             <span>{item.description}</span>
             <ButtonStyled onClick={() => handleSubmit(item.id)} type="button">
@@ -65,7 +54,7 @@ const Home: React.FC<IPropsHome> = ({ quizes }) => {
   )
 }
 
-export default Home
+export default HomePage
 
 export async function getServerSideProps() {
   const res = await fetch('http://localhost:3333/quiz')

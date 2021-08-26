@@ -4,6 +4,7 @@ import CardQuiz from '../../../CardQuiz'
 import { ButtonStyled } from '../../../Button/styled'
 import api from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
+import { UTILS } from '../../../../constants/utils'
 
 const FormTheme: React.FC = () => {
   const { quizContext, setQuizContext } = useQuiz()
@@ -49,26 +50,32 @@ const FormTheme: React.FC = () => {
         <input
           {...registerTheme('primary', { required: true })}
           placeholder="Cor primária"
+          defaultValue={UTILS.theme.colors.primary}
         />
         <input
           {...registerTheme('secondary', { required: true })}
           placeholder="Cor secondaria"
+          defaultValue={UTILS.theme.colors.secondary}
         />
         <input
           {...registerTheme('mainBg', { required: true })}
           placeholder="Cor de fundo"
+          defaultValue={UTILS.theme.colors.mainBg}
         />
         <input
           {...registerTheme('contrastText', { required: true })}
           placeholder="Cor de contraste do texto"
+          defaultValue={UTILS.theme.colors.contrastText}
         />
         <input
           {...registerTheme('success', { required: true })}
           placeholder="Cor de sucesso"
+          defaultValue={UTILS.theme.colors.success}
         />
         <input
           {...registerTheme('wrong', { required: true })}
           placeholder="Cor de erro"
+          defaultValue={UTILS.theme.colors.wrong}
         />
         <ButtonStyled type="submit">Criar tema</ButtonStyled>
       </form>

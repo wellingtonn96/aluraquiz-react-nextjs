@@ -4,13 +4,25 @@ import theme from '../../styles/theme'
 interface IPropsCardQuiz {
   background?: string
   width?: string
+  themeCustom?: {
+    primary?: string
+    secondary?: string
+    mainBg?: string
+    contrastText?: string
+    wrong?: string
+    success?: string
+  }
 }
 
 export const Container = styled.div<IPropsCardQuiz>`
-  background-color: ${theme.colors.primary};
+  background-color: ${props =>
+    props.themeCustom ? props.themeCustom.primary : theme.colors.primary};
   margin-bottom: 20px;
 
-  color: ${theme.colors.contrastText};
+  color: ${props =>
+    props.themeCustom
+      ? props.themeCustom.contrastText
+      : theme.colors.contrastText};
   border-radius: 5px;
 
   @media (min-width: 760px) {
@@ -31,7 +43,9 @@ export const Container = styled.div<IPropsCardQuiz>`
     `}
 
   div.content {
-    border: 1px solid ${theme.colors.mainBg};
+    border: 1px solid
+      ${props =>
+        props.themeCustom ? props.themeCustom.mainBg : theme.colors.mainBg};
     border-top: transparent;
     padding: 35px;
 
@@ -45,9 +59,29 @@ export const Container = styled.div<IPropsCardQuiz>`
     }
   }
 `
-export const HeaderCardQuiz = styled.div`
-  background-color: ${theme.colors.mainBg};
-  color: ${theme.colors.primary};
+
+interface IPropsHeaderQuiz {
+  themeCustom?: {
+    primary?: string
+    secondary?: string
+    mainBg?: string
+    contrastText?: string
+    wrong?: string
+    success?: string
+  }
+}
+
+export const HeaderCardQuiz = styled.div<IPropsHeaderQuiz>`
+  background-color: ${props =>
+    props.themeCustom ? props.themeCustom.mainBg : theme.colors.mainBg};
   padding: 18px 30px;
   font-weight: bold;
+
+  p {
+    opacity: 0.8;
+    color: ${props =>
+      props.themeCustom
+        ? props.themeCustom.contrastText
+        : theme.colors.contrastText};
+  }
 `

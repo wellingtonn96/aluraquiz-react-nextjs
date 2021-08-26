@@ -9,7 +9,7 @@ import { Answer, CardQuizContent } from '../styles/quiz.styles'
 import { ButtonStyled } from '../components/Button/styled'
 import { useEffect } from 'react'
 
-const Quiz: React.FC<{
+const QuizPage: React.FC<{
   user: string
   data: any
 }> = ({ user, data }) => {
@@ -52,7 +52,10 @@ const Quiz: React.FC<{
   return (
     <>
       {dataQuiz ? (
-        <Layout background={data.img_bg_url}>
+        <Layout
+          background={data.img_bg_url}
+          cornerColor={dataQuiz.theme.mainBg}
+        >
           <CardQuiz
             background={data.img_bg_url}
             header={
@@ -60,6 +63,14 @@ const Quiz: React.FC<{
                 ? `Você acertou ${rightAnswer} de ${dataQuiz.questions.length}`
                 : `< Pergunta ${question + 1} de ${dataQuiz.questions.length}`
             }
+            theme={{
+              primary: dataQuiz.theme.primary,
+              mainBg: dataQuiz.theme.mainBg,
+              wrong: dataQuiz.theme.wrong,
+              success: dataQuiz.theme.success,
+              contrastText: dataQuiz.theme.contrastText,
+              secondary: dataQuiz.theme.secondary,
+            }}
           >
             {question === dataQuiz.questions.length ? (
               <CardQuizContent>
@@ -68,7 +79,11 @@ const Quiz: React.FC<{
                 ) : (
                   <p>{`Você acertou apenas ${rightAnswer}`}</p>
                 )}
-                <ButtonStyled onClick={() => router.push('/')}>
+                <ButtonStyled
+                  onClick={() => router.push('/')}
+                  color={dataQuiz.theme.contrastText}
+                  background={dataQuiz.theme.secondary}
+                >
                   Voltar para a home
                 </ButtonStyled>
               </CardQuizContent>
@@ -97,7 +112,11 @@ const Quiz: React.FC<{
                     </>
                   )}
 
-                  <ButtonStyled onClick={handleAnswerConfirm}>
+                  <ButtonStyled
+                    onClick={handleAnswerConfirm}
+                    color={dataQuiz.theme.contrastText}
+                    background={dataQuiz.theme.secondary}
+                  >
                     Confirmar
                   </ButtonStyled>
                 </CardQuizContent>
@@ -121,7 +140,7 @@ const Quiz: React.FC<{
   )
 }
 
-export default Quiz
+export default QuizPage
 
 export async function getServerSideProps({
   query,
@@ -134,8 +153,6 @@ export async function getServerSideProps({
     const response = await axios.get(`http://localhost:3333/quiz/${query.id}`)
 
     const data = response.data
-
-    console.log(data)
 
     return {
       props: {
