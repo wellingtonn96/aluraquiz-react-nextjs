@@ -11,7 +11,12 @@ const HomeContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  /* background-color: red; */
+
+  @media (max-width: 480px) {
+    justify-content: center;
+  }
 `
 
 const ButtonNewQuizContainer = styled.div`
@@ -41,7 +46,11 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
       </ButtonNewQuizContainer>
       <HomeContainer>
         {quizes.map(item => (
-          <CardQuiz header={item.title} background={item.img_bg_url}>
+          <CardQuiz
+            header={item.title}
+            background={item.img_bg_url}
+            width="350px"
+          >
             <p>{item.title}</p>
             <span>{item.description}</span>
             <ButtonStyled onClick={() => handleSubmit(item.id)} type="button">
