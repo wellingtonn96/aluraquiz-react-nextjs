@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateQuizDto } from './dto/createQuiz.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Quiz } from './entities/Quiz';
@@ -17,6 +17,12 @@ export interface IQuestions {
   title: string;
   answer: number;
   alternatives: string[];
+}
+
+export interface IQuizUpdate {
+  bg: string;
+  title: string;
+  description: string;
 }
 
 @Injectable()
@@ -49,6 +55,18 @@ export class QuizService {
   }
 
   async getOneQuizById(id: string): Promise<Quiz> {
+    const findQuiz = await this.quisRepository.findOne(id);
+
+    if (!findQuiz) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Quiz with this id not exits!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     this.quisRepository;
     const quiz = await this.quisRepository.findOne({
       select: [
@@ -68,7 +86,7 @@ export class QuizService {
     return quiz;
   }
 
-  async updateQuiz({
+  async addThemeToQuiz({
     id,
     themeId,
   }: {
@@ -77,10 +95,14 @@ export class QuizService {
   }): Promise<Quiz | undefined> {
     const quiz = await this.quisRepository.findOne(id);
 
-    // const theme = await this.themeRepository.findOne(data.themeId);
-
     if (!quiz) {
-      throw new Error('Quiz not found!');
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Quiz with this id not exits!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     quiz.themeId = themeId;
@@ -88,5 +110,49 @@ export class QuizService {
     await this.quisRepository.save(quiz);
 
     return quiz;
+  }
+
+  async updateQuizById({
+    id,
+    quiz,
+  }: {
+    id: string;
+    quiz: IQuizUpdate;
+  }): Promise<IQuizUpdate> {
+    const findQuiz = await this.getOneQuizById(id);
+
+    if (!findQuiz) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Quiz with this id not exits!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const assignQuiz = Object.assign(findQuiz, quiz);
+
+    const quizUpdated = this.quisRepository.save(assignQuiz);
+
+    return quizUpdated;
+  }
+
+  async removeQuizById(id: string): Promise<Quiz> {
+    const findQuiz = await this.getOneQuizById(id);
+
+    if (!findQuiz) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Quiz with this id not exits!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const removedQuiz = await this.quisRepository.remove(findQuiz);
+
+    return removedQuiz;
   }
 }
