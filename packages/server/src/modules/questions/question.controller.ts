@@ -1,20 +1,47 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { CreateQuestionDto } from './dto/createQuestion.dto';
 import { Questions } from './entities/question.repository';
-import { QuestionService } from './question.service';
+import { IQuestionUpdate, QuestionService } from './question.service';
 
 @Controller('question')
 export class QuestionController {
-	constructor(private questionService: QuestionService) { }
+  constructor(private questionService: QuestionService) {}
 
-	@Post()
-	async createQuestion(@Body() createQuestionDto: CreateQuestionDto): Promise<Questions> {
-		return await this.questionService.createQuestion(createQuestionDto)
-	}
+  @Post()
+  async createQuestion(
+    @Body() createQuestionDto: CreateQuestionDto,
+  ): Promise<Questions> {
+    return await this.questionService.createQuestion(createQuestionDto);
+  }
 
-	@Get()
-	async getAllQuestions(): Promise<Questions[]> {
-		return await this.questionService.getQuestions()
-	}
+  @Get()
+  async getAllQuestions(): Promise<Questions[]> {
+    return await this.questionService.getQuestions();
+  }
+
+  @Get('/:id')
+  async getOneQuiz(@Param('id') id: string): Promise<Questions> {
+    return await this.questionService.getQuestionById(id);
+  }
+
+  @Delete('/:id')
+  async removeQuestion(@Param('id') id: string): Promise<Questions> {
+    return await this.questionService.removeQuestion(id);
+  }
+
+  @Put('/:id')
+  async updateQuestion(@Param('id') id: string, @Body() data: IQuestionUpdate) {
+    return await this.questionService.updateQuestionById({
+      id,
+      question: data,
+    });
+  }
 }
-
