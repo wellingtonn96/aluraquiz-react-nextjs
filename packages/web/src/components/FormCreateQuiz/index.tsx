@@ -100,7 +100,7 @@ const CreateQuiz: React.FC = () => {
   } = useQuiz()
 
   return (
-    <Layout background={UTILS.bg}>
+    <Layout>
       <CreateQuizContainer>
         {step === 1 && <FormQuiz />}
         {step === 2 && <FormTheme />}

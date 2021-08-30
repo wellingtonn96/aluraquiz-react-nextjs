@@ -3,9 +3,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
-import { UTILS } from '../constants/utils'
 import { ButtonStyled } from '../components/Button/styled'
-import theme from '../styles/theme'
 
 const HomeContainer = styled.div`
   display: flex;
@@ -31,7 +29,6 @@ interface IPropsHome {
 
 const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
   const router = useRouter()
-  // const [user, setUser] = React.useState<string>()
 
   function handleSubmit(id: string) {
     return router.push(`quiz/?id=${id}`)
@@ -48,11 +45,14 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
         {quizes.map(item => (
           <CardQuiz
             header={item.title}
+            idQuiz={item.id}
+            toggle={true}
             background={item.img_bg_url}
             width="350px"
           >
             <p>{item.title}</p>
             <span>{item.description}</span>
+
             <ButtonStyled onClick={() => handleSubmit(item.id)} type="button">
               Responda o quiz
             </ButtonStyled>
