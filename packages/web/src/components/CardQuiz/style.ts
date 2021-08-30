@@ -1,3 +1,4 @@
+import { Box, MenuItem } from '@material-ui/core'
 import styled, { css } from 'styled-components'
 import theme from '../../styles/theme'
 
@@ -14,7 +15,7 @@ interface IPropsCardQuiz {
   }
 }
 
-export const Container = styled.div<IPropsCardQuiz>`
+export const Container = styled(Box)<IPropsCardQuiz>`
   background-color: ${props =>
     props.themeCustom ? props.themeCustom.primary : theme.colors.primary};
   margin-bottom: 20px;
@@ -47,7 +48,7 @@ export const Container = styled.div<IPropsCardQuiz>`
       ${props =>
         props.themeCustom ? props.themeCustom.mainBg : theme.colors.mainBg};
     border-top: transparent;
-    padding: 35px;
+    padding: 25px;
 
     p {
       font-weight: bold;
@@ -74,14 +75,39 @@ interface IPropsHeaderQuiz {
 export const HeaderCardQuiz = styled.div<IPropsHeaderQuiz>`
   background-color: ${props =>
     props.themeCustom ? props.themeCustom.mainBg : theme.colors.mainBg};
-  padding: 18px 30px;
+  padding: 0px 25px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
 
   p {
+    padding: 18px 0;
     opacity: 0.8;
     color: ${props =>
       props.themeCustom
         ? props.themeCustom.contrastText
         : theme.colors.contrastText};
+
+    flex: 1;
+  }
+
+  button {
+    svg {
+      color: ${props =>
+        props.themeCustom
+          ? props.themeCustom.contrastText
+          : theme.colors.contrastText};
+    }
+  }
+`
+
+export const MenuItemStyled = styled(MenuItem)`
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-right: 5px;
   }
 `
