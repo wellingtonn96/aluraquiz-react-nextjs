@@ -8,15 +8,19 @@ import { useRouter } from 'next/router'
 import api from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import { UTILS } from '../../../../constants/utils'
+import { MenuItemStyled } from '../../../CardQuiz/style'
+import Layout from '../../../Layout'
+import { CreateQuizContainer } from '../../../../pages/update/[id]'
 
 const FormQuestion: React.FC<{
   data: any
-  setStep: React.Dispatch<React.SetStateAction<number>>
-}> = ({ data, setStep }) => {
+}> = ({ data }) => {
   const router = useRouter()
   const { quizContext, setQuizContext } = useQuiz()
-  const [option, setOption] = useState(['option 1', 'option 2'])
-  const [indexRightAnswer, setIndexRightAnswer] = useState(undefined)
+  const [option, setOption] = useState(data.alternatives)
+  const [indexRightAnswer, setIndexRightAnswer] = useState(
+    data.alternatives.findIndex(item => item === data.answer)
+  )
   const [rightAnswer, setRightAnswer] = useState(undefined)
 
   const {
@@ -49,11 +53,7 @@ const FormQuestion: React.FC<{
         })
       }
 
-      setIndexRightAnswer(undefined)
-      setRightAnswer(undefined)
-      setOption(['option 1', 'option 2'])
-      resetQuestion()
-      setStep(3)
+      router.back()
     } catch (error) {
       return alert(JSON.stringify({ err: error.message }))
     }
@@ -64,65 +64,70 @@ const FormQuestion: React.FC<{
     setIndexRightAnswer(index)
   }
 
-  function handleBackToHome() {
-    setQuizContext({
-      idQuiz: undefined,
-      step: 1,
-    })
-    router.push('/')
-  }
-
   return (
-    <CardQuiz header="Criar questões" width="450px">
-      <form key={3} onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}>
-        <input
-          {...registerQuestion('title_question', { required: true })}
-          placeholder="Titulo"
-        />
-        <input
-          {...registerQuestion('description_question', {
-            required: true,
-          })}
-          placeholder="Descrição"
-        />
-        <div>
-          {option.map((item, index) => (
-            <div className="options">
-              <input
-                {...registerQuestion(`option_${index}` as any, {
-                  required: true,
-                })}
-                placeholder={`Opção ${index + 1}`}
-              />
-              <button type="button" onClick={() => handleRightAnswer(index)}>
-                <FaCheck
-                  size={25}
-                  style={
-                    index === indexRightAnswer
-                      ? { color: theme.colors.success }
-                      : { color: theme.colors.contrastText, opacity: '0.5' }
-                  }
-                />
+    <Layout>
+      <CreateQuizContainer>
+        <CardQuiz header="Atualizar questão!" width="450px">
+          <form
+            key={3}
+            onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}
+          >
+            <input
+              {...registerQuestion('title_question', { required: true })}
+              placeholder="Titulo"
+              defaultValue={data.title}
+            />
+            <input
+              {...registerQuestion('description_question', {
+                required: true,
+              })}
+              placeholder="Descrição"
+              defaultValue={data.description}
+            />
+            <div>
+              {option.map((item, index) => (
+                <div className="options">
+                  <input
+                    {...registerQuestion(`option_${index}` as any, {
+                      required: true,
+                    })}
+                    placeholder={`Opção ${index + 1}`}
+                    defaultValue={!item.includes('option') ? item : ''}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRightAnswer(index)}
+                  >
+                    <FaCheck
+                      size={25}
+                      style={
+                        index === indexRightAnswer
+                          ? { color: theme.colors.success }
+                          : { color: theme.colors.contrastText, opacity: '0.5' }
+                      }
+                    />
+                  </button>
+                </div>
+              ))}
+
+              <button
+                style={{ color: UTILS.theme.colors.contrastText }}
+                onClick={addMoreOption}
+                className="moreOptions"
+                type="button"
+              >
+                <FaPlus size={20} />
+                adicionar opção
               </button>
             </div>
-          ))}
-
-          <button
-            style={{ color: UTILS.theme.colors.contrastText }}
-            onClick={addMoreOption}
-            className="moreOptions"
-            type="button"
-          >
-            <FaPlus size={20} />
-            adicionar opção
-          </button>
-        </div>
-        <ButtonStyled type="submit">Adicionar questão</ButtonStyled>
-        <ButtonStyled onClick={handleBackToHome} type="button">
-          Finalizar quiz
-        </ButtonStyled>
-      </form>
-    </CardQuiz>
+            <ButtonStyled type="submit">Atualizar questão</ButtonStyled>
+            {/* <ButtonStyled onClick={() => setStep(0)} type="button">
+          Voltar para a home
+        </ButtonStyled> */}
+          </form>
+        </CardQuiz>
+      </CreateQuizContainer>
+    </Layout>
   )
 }
 

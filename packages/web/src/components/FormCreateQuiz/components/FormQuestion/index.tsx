@@ -68,9 +68,8 @@ const FormQuestion: React.FC = () => {
   function handleBackToHome() {
     setQuizContext({
       idQuiz: undefined,
-      step: 1,
+      step: undefined,
     })
-    router.push('/')
   }
 
   return (

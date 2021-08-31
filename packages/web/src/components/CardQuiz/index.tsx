@@ -86,7 +86,7 @@ const CardQuiz: React.FC<{
 
   const updateQuiz = (id: string) => {
     try {
-      router.push(`/update-quiz/${id}`)
+      router.push(`/update/${id}`)
     } catch (error) {
       alert(JSON.stringify({ err: error.message }))
     }

@@ -11,7 +11,7 @@ type ContextValue = {
 }
 
 const defaultValue = {
-  step: 1,
+  step: undefined,
   idQuiz: undefined,
 }
 

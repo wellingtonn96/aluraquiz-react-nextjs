@@ -102,7 +102,7 @@ const CreateQuiz: React.FC = () => {
   return (
     <Layout>
       <CreateQuizContainer>
-        {step === 1 && <FormQuiz />}
+        {!step && <FormQuiz />}
         {step === 2 && <FormTheme />}
         {step === 3 && <FormQuestion />}
       </CreateQuizContainer>
