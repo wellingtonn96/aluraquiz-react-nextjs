@@ -56,14 +56,6 @@ export class QuestionService {
     }
 
     const question = await this.questionRepository.findOne({
-      select: [
-        'description',
-        'id',
-        'image_url',
-        'title',
-        'created_at',
-        'updated_at',
-      ],
       relations: ['quiz'],
       where: {
         id: id,
