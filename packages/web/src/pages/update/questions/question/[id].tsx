@@ -1,15 +1,14 @@
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import UpdateQuiz from '../../components/FormUpdateQuiz'
-import api from '../../services/api'
+import React from 'react'
+import FormQuestion from '../../../../components/FormUpdateQuiz/components/FormQuestion'
+
+import api from '../../../../services/api'
 
 const CreateQuizPage: React.FC<{
-  id: string
   data: any
-}> = ({ id, data }) => {
+}> = ({ data }) => {
   return (
     <>
-      <UpdateQuiz id={id as string} data={data} />
+      <FormQuestion data={data} />
     </>
   )
 }
@@ -22,13 +21,14 @@ export async function getServerSideProps({
   }
 }) {
   try {
-    const response = await api.get(`/quiz/${query.id}`)
+    const response = await api.get(`/question/${query.id}`)
 
     const data = response.data
 
+    console.log('passei por aqui', data)
+
     return {
       props: {
-        id: query.id,
         data,
       },
     }
