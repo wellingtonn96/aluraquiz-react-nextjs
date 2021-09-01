@@ -4,13 +4,14 @@ import styled from 'styled-components'
 import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
 import { ButtonStyled } from '../components/Button/styled'
+import api from '../services/api'
+import { FiEdit, FiTrash } from 'react-icons/fi'
 
 const HomeContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  /* background-color: red; */
 
   @media (max-width: 480px) {
     justify-content: center;
@@ -34,6 +35,33 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
     return router.push(`quiz/?id=${id}`)
   }
 
+  const toggleMenuItems = [
+    {
+      icon: <FiTrash size={20} />,
+      text: 'Deletar',
+      onclick: async (id: string) => {
+        try {
+          await api.delete(`quiz/${id}`)
+
+          router.push(`/`)
+        } catch (error) {
+          alert(JSON.stringify({ err: error.message }))
+        }
+      },
+    },
+    {
+      icon: <FiEdit size={20} />,
+      text: 'Editar',
+      onclick: async (id: string) => {
+        try {
+          router.push(`/update/${id}`)
+        } catch (error) {
+          alert(JSON.stringify({ err: error.message }))
+        }
+      },
+    },
+  ]
+
   return (
     <Layout>
       <ButtonNewQuizContainer>
@@ -45,8 +73,8 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
         {quizes.map(item => (
           <CardQuiz
             header={item.title}
-            idQuiz={item.id}
-            toggle={true}
+            itemId={item.id}
+            toggleItems={toggleMenuItems}
             background={item.img_bg_url}
             width="350px"
           >

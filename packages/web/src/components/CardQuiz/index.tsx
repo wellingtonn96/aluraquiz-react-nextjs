@@ -25,12 +25,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+type toggleMenuItems = {
+  icon: JSX.Element
+  text: string
+  onclick: (id: string) => void
+}
+
 const CardQuiz: React.FC<{
   header: string
   background?: string
-  toggle?: boolean
+  toggleItems?: toggleMenuItems[]
   width?: string
-  idQuiz?: string
+  itemId?: string
   theme?: {
     primary?: string
     secondary?: string
@@ -39,7 +45,7 @@ const CardQuiz: React.FC<{
     wrong?: string
     success?: string
   }
-}> = ({ children, header, background, width, theme, toggle, idQuiz }) => {
+}> = ({ children, header, background, width, theme, toggleItems, itemId }) => {
   const classes = useStyles()
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
@@ -74,29 +80,11 @@ const CardQuiz: React.FC<{
     prevOpen.current = open
   }, [open])
 
-  const deleteQuiz = async (id: string) => {
-    try {
-      await api.delete(`quiz/${id}`)
-
-      router.push('/')
-    } catch (error) {
-      alert(JSON.stringify({ err: error.message }))
-    }
-  }
-
-  const updateQuiz = (id: string) => {
-    try {
-      router.push(`/update/${id}`)
-    } catch (error) {
-      alert(JSON.stringify({ err: error.message }))
-    }
-  }
-
   return (
     <Container background={background} width={width} themeCustom={theme}>
       <HeaderCardQuiz themeCustom={theme}>
         <p>{header}</p>
-        {toggle && (
+        {toggleItems && (
           <IconButton
             ref={anchorRef}
             style={{
@@ -111,60 +99,54 @@ const CardQuiz: React.FC<{
         )}
       </HeaderCardQuiz>
       <div>
-        <div>
-          <Popper
-            open={open}
-            anchorEl={anchorRef.current}
-            role={undefined}
-            transition
-            disablePortal
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom',
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList
-                      autoFocusItem={open}
-                      id="menu-list-grow"
-                      onKeyDown={handleListKeyDown}
-                      style={{
-                        background: UTILS.theme.colors.primary,
-                        color: UTILS.theme.colors.contrastText,
-                      }}
-                    >
-                      <MenuItemStyled
+        {toggleItems && (
+          <div>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom' ? 'center top' : 'center bottom',
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList
+                        autoFocusItem={open}
+                        id="menu-list-grow"
+                        onKeyDown={handleListKeyDown}
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
+                          background: UTILS.theme.colors.primary,
+                          color: UTILS.theme.colors.contrastText,
                         }}
-                        onClick={() => deleteQuiz(idQuiz)}
                       >
-                        <FiTrash size={20} />
-                        Deletar
-                      </MenuItemStyled>
-                      <MenuItemStyled
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                        onClick={() => updateQuiz(idQuiz)}
-                      >
-                        <FiEdit size={20} />
-                        Atualizar
-                      </MenuItemStyled>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </div>
+                        {toggleItems.map(item => (
+                          <MenuItemStyled
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                            onClick={() => item.onclick(itemId)}
+                          >
+                            {item.icon}
+                            {item.text}
+                          </MenuItemStyled>
+                        ))}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </div>
+        )}
       </div>
       <div className="img-cover"></div>
       <div className="content">{children}</div>
