@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaCheck, FaPlus } from 'react-icons/fa'
+import { FaCheck, FaPlus, FaTrash } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 import CardQuiz from '../../../CardQuiz'
 import { ButtonStyled } from '../../../Button/styled'
@@ -7,13 +7,77 @@ import theme from '../../../../styles/theme'
 import { useRouter } from 'next/router'
 import api from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
-import { Background } from '../../../Layout/style'
+import styled from 'styled-components'
 import { UTILS } from '../../../../constants/utils'
+
+const InputStyled = styled.input`
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  outline: 0;
+  background: transparent;
+  border: 1px solid ${theme.colors.mainBg};
+  color: ${theme.colors.contrastText};
+  padding: 0 10px;
+  font-size: 18px;
+  margin: 10px 0;
+`
+
+export const ButtonMoreOption = styled.button`
+  background: transparent;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin-top: 10px;
+  text-transform: uppercase;
+  color: ${theme.colors.secondary};
+  border: 0;
+  font-size: 16px;
+  font-weight: bold;
+
+  svg {
+    margin-right: 10px;
+  }
+`
+
+export const OptionsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+
+  div {
+    display: flex;
+    margin-left: 15px;
+    justify-content: space-between;
+
+    button {
+      background-color: transparent;
+      border: 0;
+
+      &:first-child {
+        margin-right: 20px;
+      }
+
+      svg {
+        color: ${theme.colors.secondary};
+        font-weight: bold;
+      }
+
+      &:hover {
+        svg {
+          color: ${theme.colors.success};
+        }
+      }
+    }
+  }
+`
 
 const FormQuestion: React.FC = () => {
   const router = useRouter()
   const { quizContext, setQuizContext } = useQuiz()
-  const [option, setOption] = useState(['option 1', 'option 2'])
+  const [option, setOption] = useState(['option_1', 'option_2'])
   const [indexRightAnswer, setIndexRightAnswer] = useState(undefined)
   const [rightAnswer, setRightAnswer] = useState(undefined)
 
@@ -26,26 +90,28 @@ const FormQuestion: React.FC = () => {
   })
 
   function addMoreOption() {
-    const lastItemArray = option[option.length - 1].split(' ')
+    const lastItemArray = option[option.length - 1].split('_')
 
     const item = parseInt(lastItemArray[1])
 
-    setOption([...option, `option ${item + 1}`])
+    console.log(option)
+
+    setOption([...option, `option_${item + 1}`])
   }
 
   const handleSubmitFormQuestions = async dataQuestion => {
     try {
-      if (rightAnswer) {
-        await api.post('question', {
-          image_url:
-            'https://thumbs.gfycat.com/IncredibleGrouchyEarwig-size_restricted.gif',
-          title: dataQuestion.title_question,
-          description: dataQuestion.description_question,
-          answer: dataQuestion[rightAnswer],
-          alternatives: Object.values(dataQuestion).slice(2),
-          quizId: quizContext.idQuiz,
-        })
-      }
+      !rightAnswer && new Error()
+
+      await api.post('question', {
+        image_url:
+          'https://thumbs.gfycat.com/IncredibleGrouchyEarwig-size_restricted.gif',
+        title: dataQuestion.title_question,
+        description: dataQuestion.description_question,
+        answer: dataQuestion[rightAnswer],
+        alternatives: option.map(item => dataQuestion[item]),
+        quizId: quizContext.idQuiz,
+      })
 
       setIndexRightAnswer(undefined)
       setRightAnswer(undefined)
@@ -56,13 +122,25 @@ const FormQuestion: React.FC = () => {
         step: 3,
       })
     } catch (error) {
-      return console.log(error)
+      if (error instanceof Error) {
+        alert('Selecione uma alternativa!')
+      } else {
+        alert(error.message)
+      }
     }
   }
 
   function handleRightAnswer(index: number) {
     setRightAnswer(`option_${index}`)
     setIndexRightAnswer(index)
+  }
+
+  function handleRemoveOption(item: string) {
+    setOption(state =>
+      state.length > 2
+        ? state.filter(stateOption => stateOption !== item)
+        : state
+    )
   }
 
   function handleBackToHome() {
@@ -74,12 +152,12 @@ const FormQuestion: React.FC = () => {
 
   return (
     <CardQuiz header="Criar questões" width="450px">
-      <form key={3} onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}>
-        <input
+      <form onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}>
+        <InputStyled
           {...registerQuestion('title_question', { required: true })}
           placeholder="Titulo"
         />
-        <input
+        <InputStyled
           {...registerQuestion('description_question', {
             required: true,
           })}
@@ -87,35 +165,48 @@ const FormQuestion: React.FC = () => {
         />
         <div>
           {option.map((item, index) => (
-            <div className="options">
-              <input
+            <OptionsContainer>
+              <InputStyled
                 {...registerQuestion(`option_${index}` as any, {
                   required: true,
                 })}
                 placeholder={`Opção ${index + 1}`}
               />
-              <button type="button" onClick={() => handleRightAnswer(index)}>
-                <FaCheck
-                  size={25}
-                  style={
-                    index === indexRightAnswer
-                      ? { color: theme.colors.success }
-                      : { color: theme.colors.contrastText, opacity: '0.5' }
-                  }
-                />
-              </button>
-            </div>
+              <div>
+                <button type="button" onClick={() => handleRightAnswer(index)}>
+                  <FaCheck
+                    size={25}
+                    style={
+                      index === indexRightAnswer
+                        ? { color: theme.colors.success }
+                        : {
+                            color: theme.colors.contrastText,
+                            opacity: '0.5',
+                          }
+                    }
+                  />
+                </button>
+                <button type="button" onClick={() => handleRemoveOption(item)}>
+                  <FaTrash
+                    size={18}
+                    style={{
+                      color: theme.colors.contrastText,
+                      opacity: '0.5',
+                    }}
+                  />
+                </button>
+              </div>
+            </OptionsContainer>
           ))}
 
-          <button
+          <ButtonMoreOption
             style={{ color: UTILS.theme.colors.contrastText }}
             onClick={addMoreOption}
-            className="moreOptions"
             type="button"
           >
             <FaPlus size={20} />
             adicionar opção
-          </button>
+          </ButtonMoreOption>
         </div>
         <ButtonStyled type="submit">Adicionar questão</ButtonStyled>
         <ButtonStyled onClick={handleBackToHome} type="button">
