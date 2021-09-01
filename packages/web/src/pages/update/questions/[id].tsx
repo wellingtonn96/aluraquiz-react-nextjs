@@ -1,3 +1,4 @@
+import { route } from 'next/dist/next-server/server/router'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { ButtonStyled } from '../../../components/Button/styled'
@@ -10,8 +11,17 @@ const CreateQuizPage: React.FC<{
   id: string
   data: any
 }> = ({ data }) => {
-  const [formQuestion, setFormQuestion] = useState(undefined)
   const router = useRouter()
+
+  const deleteQuestion = async (id: string) => {
+    try {
+      await api.delete(`question/${id}`)
+
+      router.push(`/update/questions/${data.id}`)
+    } catch (error) {
+      alert(JSON.stringify({ err: error.message }))
+    }
+  }
 
   return (
     <Layout>
@@ -33,6 +43,9 @@ const CreateQuizPage: React.FC<{
                     }
                   >
                     Atualizar Questão
+                  </ButtonStyled>
+                  <ButtonStyled onClick={() => deleteQuestion(item.id)}>
+                    Remover Questão
                   </ButtonStyled>
                 </CardQuiz>
               </>
