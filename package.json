@@ -1,0 +1,11 @@
+{
+  "name": "aluraquiz-react-nextjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/wellingtonn96/aluraquiz-react-nextjs.git",
+  "author": "Wellington Santos <weltossousa@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start:prod": "cd packages/server && npm run start:prod"
+  }
+}
