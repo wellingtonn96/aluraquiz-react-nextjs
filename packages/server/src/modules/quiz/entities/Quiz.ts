@@ -1,5 +1,6 @@
-import { Questions } from 'src/modules/questions/entities/question.repository';
-import { ThemeQuiz } from 'src/modules/theme/entities/theme.repository';
+import { Questions } from '../../questions/entities/question.repository';
+import { ThemeQuiz } from '../../theme/entities/theme.repository';
+
 import {
   Entity,
   PrimaryGeneratedColumn,

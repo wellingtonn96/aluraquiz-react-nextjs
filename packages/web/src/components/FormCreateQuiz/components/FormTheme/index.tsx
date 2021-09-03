@@ -55,7 +55,7 @@ const FormTheme: React.FC = () => {
       })
       resetTheme()
     } catch (error) {
-      return console.log(error)
+      return alert(JSON.stringify(error.message))
     }
   }
 

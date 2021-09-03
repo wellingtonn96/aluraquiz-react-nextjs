@@ -6,6 +6,9 @@
   "author": "Wellington Santos <weltossousa@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:prod": "cd packages/server && npm run start:prod"
+    "install": "npm install --prefix packages/server",
+    "prebuild": "npm --prefix packages/server run prebuild",
+    "build": "npm --prefix packages/server run build",
+    "start": "npm --prefix packages/server run start:prod"
   }
 }

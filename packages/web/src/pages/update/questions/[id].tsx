@@ -1,6 +1,5 @@
-import { route } from 'next/dist/next-server/server/router'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React from 'react'
 import { ButtonStyled } from '../../../components/Button/styled'
 import CardQuiz from '../../../components/CardQuiz'
 import Layout from '../../../components/Layout'

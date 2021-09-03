@@ -25,8 +25,6 @@ export async function getServerSideProps({
 
     const data = response.data
 
-    console.log('passei por aqui', data)
-
     return {
       props: {
         data,

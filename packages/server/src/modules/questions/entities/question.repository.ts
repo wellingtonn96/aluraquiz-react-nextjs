@@ -1,4 +1,4 @@
-import { Quiz } from 'src/modules/quiz/entities/Quiz';
+import { Quiz } from '../../quiz/entities/Quiz';
 import {
   Entity,
   PrimaryGeneratedColumn,

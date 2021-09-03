@@ -129,8 +129,6 @@ const FormQuestion: React.FC<{
 
     const item = parseInt(lastItemArray[1])
 
-    console.log(option)
-
     setOption([...option, `option_${item + 1}`])
   }
 
