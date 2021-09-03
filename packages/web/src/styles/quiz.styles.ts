@@ -49,7 +49,7 @@ export const Answer = styled.div<IAnswer>`
           opacity: 1;
         `
       : css`
-          opacity: 0.6;
+          opacity: 0.5;
         `}
 
   &:hover {

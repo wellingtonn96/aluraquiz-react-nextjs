@@ -58,6 +58,7 @@ const QuizPage: React.FC<{
         >
           <CardQuiz
             background={data.img_bg_url}
+            width="400px"
             header={
               question === dataQuiz.questions.length
                 ? `Você acertou ${rightAnswer} de ${dataQuiz.questions.length}`

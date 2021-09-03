@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import Layout from '../../components/Layout'
-import theme from '../../styles/theme'
-import { UTILS } from '../../constants/utils'
 import { useQuiz } from '../../hooks/Quiz'
 import FormQuiz from './components/FormQuiz'
 import FormTheme from './components/FormTheme'
 import FormQuestion from './components/FormQuestion'
+import router, { useRouter } from 'next/router'
 
 const CreateQuizContainer = styled.div`
   width: 100%;
@@ -17,16 +16,27 @@ const CreateQuizContainer = styled.div`
 `
 
 const CreateQuiz: React.FC = () => {
+  const router = useRouter()
+
   const {
     quizContext: { step },
+    setQuizContext,
   } = useQuiz()
+
+  function goBack() {
+    router.push('/')
+    setQuizContext({
+      idQuiz: undefined,
+      step: undefined,
+    })
+  }
 
   return (
     <Layout>
       <CreateQuizContainer>
         {!step && <FormQuiz />}
         {step === 2 && <FormTheme />}
-        {step === 3 && <FormQuestion />}
+        {step === 3 && <FormQuestion handleGoBack={goBack} />}
       </CreateQuizContainer>
     </Layout>
   )

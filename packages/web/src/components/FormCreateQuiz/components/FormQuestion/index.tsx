@@ -74,10 +74,12 @@ export const OptionsContainer = styled.div`
   }
 `
 
-const FormQuestion: React.FC = () => {
+const FormQuestion: React.FC<{
+  handleGoBack(): void
+}> = ({ handleGoBack }) => {
   const router = useRouter()
-  const { quizContext, setQuizContext } = useQuiz()
-  const [option, setOption] = useState(['option_1', 'option_2'])
+  const { setQuizContext, quizContext } = useQuiz()
+  const [option, setOption] = useState<string[]>(['option_0', 'option_1'])
   const [indexRightAnswer, setIndexRightAnswer] = useState(undefined)
   const [rightAnswer, setRightAnswer] = useState(undefined)
 
@@ -96,7 +98,6 @@ const FormQuestion: React.FC = () => {
 
     setOption([...option, `option_${item + 1}`])
   }
-
   const handleSubmitFormQuestions = async dataQuestion => {
     try {
       !rightAnswer && new Error()
@@ -113,7 +114,7 @@ const FormQuestion: React.FC = () => {
 
       setIndexRightAnswer(undefined)
       setRightAnswer(undefined)
-      setOption(['option 1', 'option 2'])
+      setOption(['option_0', 'option_1'])
       resetQuestion()
       setQuizContext({
         ...quizContext,
@@ -142,10 +143,7 @@ const FormQuestion: React.FC = () => {
   }
 
   function handleBackToHome() {
-    setQuizContext({
-      idQuiz: undefined,
-      step: undefined,
-    })
+    handleGoBack()
   }
 
   return (

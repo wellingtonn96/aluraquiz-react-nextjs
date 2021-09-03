@@ -147,7 +147,14 @@ const CreateQuiz: React.FC<{
             </CardQuiz>
           </>
         ) : (
-          <FormQuestion />
+          <FormQuestion
+            handleGoBack={() =>
+              setQuizContext({
+                idQuiz: undefined,
+                step: undefined,
+              })
+            }
+          />
         )}
       </CreateQuizContainer>
     </Layout>
