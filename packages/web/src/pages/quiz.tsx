@@ -150,7 +150,7 @@ export async function getServerSideProps({
   }
 }) {
   try {
-    const response = await axios.get(`http://localhost:3333/quiz/${query.id}`)
+    const response = await axios.get(`${UTILS.api}/quiz/${query.id}`)
 
     const data = response.data
 

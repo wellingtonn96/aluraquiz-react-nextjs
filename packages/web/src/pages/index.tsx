@@ -6,6 +6,7 @@ import CardQuiz from '../components/CardQuiz'
 import { ButtonStyled } from '../components/Button/styled'
 import api from '../services/api'
 import { FiEdit, FiTrash } from 'react-icons/fi'
+import { UTILS } from '../constants/utils'
 
 const HomeContainer = styled.div`
   display: flex;
@@ -94,9 +95,11 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
 export default HomePage
 
 export async function getServerSideProps() {
-  const res = await fetch('http://localhost:3333/quiz')
+  const res = await fetch(`${UTILS.api}/quiz`)
 
   const response = await res.json()
+
+  console.log('quizes', response)
 
   return {
     props: {
