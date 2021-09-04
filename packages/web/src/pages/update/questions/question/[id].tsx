@@ -3,7 +3,7 @@ import FormQuestion from '../../../../components/FormUpdateQuiz/components/FormQ
 
 import api from '../../../../services/api'
 
-const CreateQuizPage: React.FC<{
+const QuestionQuizPage: React.FC<{
   data: any
 }> = ({ data }) => {
   return (
@@ -37,4 +37,4 @@ export async function getServerSideProps({
   }
 }
 
-export default CreateQuizPage
+export default QuestionQuizPage

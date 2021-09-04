@@ -240,9 +240,6 @@ const FormQuestion: React.FC<{
               </button>
             </div>
             <ButtonStyled type="submit">Atualizar questão</ButtonStyled>
-            {/* <ButtonStyled onClick={() => setStep(0)} type="button">
-          Voltar para a home
-        </ButtonStyled> */}
           </form>
         </CardQuiz>
       </CreateQuizContainer>

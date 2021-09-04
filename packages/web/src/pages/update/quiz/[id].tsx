@@ -4,7 +4,7 @@ import FormQuiz from '../../../components/FormUpdateQuiz/components/FormQuiz'
 
 import api from '../../../services/api'
 
-const CreateQuizPage: React.FC<{
+const UpdateQuizPage: React.FC<{
   id: string
   data: any
 }> = ({ data }) => {
@@ -40,4 +40,4 @@ export async function getServerSideProps({
   }
 }
 
-export default CreateQuizPage
+export default UpdateQuizPage

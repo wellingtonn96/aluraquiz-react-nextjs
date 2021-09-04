@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import CardQuiz from '../../components/CardQuiz'
 import { ButtonStyled } from '../../components/Button/styled'
 import api from '../../services/api'
-import { useState } from 'react'
 import { useQuiz } from '../../hooks/Quiz'
 import FormQuestion from '../../components/FormCreateQuiz/components/FormQuestion'
 
@@ -97,7 +96,7 @@ export const CreateQuizContainer = styled.div<IPropsCreateQuiz>`
   }
 `
 
-const CreateQuiz: React.FC<{
+const UpdateQuiz: React.FC<{
   data: any
 }> = ({ data }) => {
   const router = useRouter()
@@ -185,4 +184,4 @@ export async function getServerSideProps({
   }
 }
 
-export default CreateQuiz
+export default UpdateQuiz

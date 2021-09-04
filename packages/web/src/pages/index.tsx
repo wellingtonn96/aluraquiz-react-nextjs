@@ -7,6 +7,8 @@ import { ButtonStyled } from '../components/Button/styled'
 import api from '../services/api'
 import { FiEdit, FiTrash } from 'react-icons/fi'
 import { UTILS } from '../constants/utils'
+import ReactLoading from 'react-loading'
+import theme from '../styles/theme'
 
 const HomeContainer = styled.div`
   display: flex;
@@ -17,6 +19,14 @@ const HomeContainer = styled.div`
   @media (max-width: 480px) {
     justify-content: center;
   }
+
+  div.loading {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+  }
 `
 
 const ButtonNewQuizContainer = styled.div`
@@ -26,7 +36,7 @@ const ButtonNewQuizContainer = styled.div`
 `
 
 interface IPropsHome {
-  quizes: any[]
+  quizes: any[] | undefined
 }
 
 const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
@@ -71,22 +81,31 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
         </ButtonStyled>
       </ButtonNewQuizContainer>
       <HomeContainer>
-        {quizes.map(item => (
-          <CardQuiz
-            header={item.title}
-            itemId={item.id}
-            toggleItems={toggleMenuItems}
-            background={item.img_bg_url}
-            width="350px"
-          >
-            <p>{item.title}</p>
-            <span>{item.description}</span>
+        {quizes ? (
+          quizes.map(item => (
+            <CardQuiz
+              header={item.title}
+              itemId={item.id}
+              toggleItems={toggleMenuItems}
+              background={item.img_bg_url}
+              width="350px"
+            >
+              <p>{item.title}</p>
+              <span>{item.description}</span>
 
-            <ButtonStyled onClick={() => handleSubmit(item.id)} type="button">
-              Responda o quiz
-            </ButtonStyled>
-          </CardQuiz>
-        ))}
+              <ButtonStyled onClick={() => handleSubmit(item.id)} type="button">
+                Responda o quiz
+              </ButtonStyled>
+            </CardQuiz>
+          ))
+        ) : (
+          <div className="loading">
+            <ReactLoading
+              color={theme.colors.secondary}
+              type="spinningBubbles"
+            />
+          </div>
+        )}
       </HomeContainer>
     </Layout>
   )
@@ -95,15 +114,21 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
 export default HomePage
 
 export async function getServerSideProps() {
-  const res = await fetch(`${UTILS.api}/quiz`)
+  try {
+    const res = await fetch(`${UTILS.api}/quiz`)
 
-  const response = await res.json()
+    const response = await res.json()
 
-  console.log('quizes', response)
-
-  return {
-    props: {
-      quizes: response,
-    },
+    return {
+      props: {
+        quizes: response,
+      },
+    }
+  } catch (error) {
+    return {
+      props: {
+        quizes: null,
+      },
+    }
   }
 }

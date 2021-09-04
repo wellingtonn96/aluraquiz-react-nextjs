@@ -6,7 +6,7 @@ import Layout from '../../../components/Layout'
 import api from '../../../services/api'
 import { CreateQuizContainer } from '../[id]'
 
-const CreateQuizPage: React.FC<{
+const UpdateQuestionPage: React.FC<{
   id: string
   data: any
 }> = ({ data }) => {
@@ -81,4 +81,4 @@ export async function getServerSideProps({
   }
 }
 
-export default CreateQuizPage
+export default UpdateQuestionPage

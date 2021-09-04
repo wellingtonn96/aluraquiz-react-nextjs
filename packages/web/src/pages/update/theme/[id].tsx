@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import FormTheme from '../../../components/FormUpdateQuiz/components/FormTheme'
 import api from '../../../services/api'
 
-const CreateQuizPage: React.FC<{
+const UpadateThemePage: React.FC<{
   data: any
 }> = ({ data }) => {
   return (
@@ -38,4 +38,4 @@ export async function getServerSideProps({
   }
 }
 
-export default CreateQuizPage
+export default UpadateThemePage

@@ -5,8 +5,6 @@ import { UTILS } from '../../constants/utils'
 import { IconButton, Grow, Paper, Popper, MenuList } from '@material-ui/core'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { makeStyles } from '@material-ui/core/styles'
-import api from '../../services/api'
-import { useRouter } from 'next/router'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,8 +44,6 @@ const CardQuiz: React.FC<{
     success?: string
   }
 }> = ({ children, header, background, width, theme, toggleItems, itemId }) => {
-  const classes = useStyles()
-  const router = useRouter()
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
 
