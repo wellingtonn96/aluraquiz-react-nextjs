@@ -1,6 +1,6 @@
 export const UTILS = {
   github: 'https://github.com/wellingtonn96/quiz-app-generator',
-  api: 'https://new-app-devto.herokuapp.com',
+  api: 'https://app-quiz-api.herokuapp.com',
   theme: {
     colors: {
       primary: '#171B35',

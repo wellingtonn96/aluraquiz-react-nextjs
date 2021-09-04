@@ -14,7 +14,6 @@ const CreateQuizContainer = styled.div`
   align-items: center;
   flex-direction: column;
 `
-
 const CreateQuiz: React.FC = () => {
   const router = useRouter()
 

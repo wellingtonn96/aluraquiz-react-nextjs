@@ -36,7 +36,7 @@ const ButtonNewQuizContainer = styled.div`
 `
 
 interface IPropsHome {
-  quizes: any[] | undefined
+  quizes: any[] | null
 }
 
 const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
