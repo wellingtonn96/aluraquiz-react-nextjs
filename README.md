@@ -52,7 +52,7 @@ This app features all the latest tools and practices in web development!
 
 ### Getting started with the frontend app
 
-1. Move yourself to the frontend folder: `cd frontend`
+1. Move yourself to the web folder: `cd web`
 2. Run `yarn install` to install the dependencies
 3. Run `yarn dev` to start the web application
 
