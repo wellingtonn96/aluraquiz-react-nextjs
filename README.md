@@ -28,6 +28,8 @@ This app features all the latest tools and practices in web development!
 - :izakaya_lantern: **NestJS** — Nest (NestJS) is a framework for building efficient, scalable Node. js server-side applications, built with and fully supports TypeScript. 
 - :blue_book: **Postgres** — A cross-platform and open-source relational database.
 - :blue_book: **Typescript** —TypeScript is a strongly typed programming language which builds on JavaScript giving you better tooling at any scale.
+- :orthodox_cross: **Heroku** — Heroku is a platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.
+- :black_circle: **Vercel** Vercel is the best place to deploy any frontend app. Start by deploying with zero configuration to our global edge network. Scale dynamically to millions of pages without breaking a sweat.
 
 ## Getting started
 
