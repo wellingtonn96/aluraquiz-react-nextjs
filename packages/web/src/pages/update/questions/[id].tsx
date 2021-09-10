@@ -23,7 +23,7 @@ const UpdateQuestionPage: React.FC<{
   }
 
   return (
-    <Layout>
+    <Layout padding={true}>
       <CreateQuizContainer>
         {
           <>

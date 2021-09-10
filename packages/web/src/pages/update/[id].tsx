@@ -103,7 +103,7 @@ const UpdateQuiz: React.FC<{
   const { setQuizContext, quizContext } = useQuiz()
 
   return (
-    <Layout>
+    <Layout padding={true}>
       <CreateQuizContainer>
         {!quizContext.idQuiz ? (
           <>
