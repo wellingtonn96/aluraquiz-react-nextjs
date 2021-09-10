@@ -31,7 +31,7 @@ const CreateQuiz: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <Layout padding={true}>
       <CreateQuizContainer>
         {!step && <FormQuiz />}
         {step === 2 && <FormTheme />}

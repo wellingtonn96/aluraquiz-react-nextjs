@@ -1,15 +1,49 @@
 import React from 'react'
 import { UTILS } from '../../constants/utils'
 import GithubCorner from 'react-github-corner'
-import { Background } from './style'
+import { Background, HeaderContainer } from './style'
+import Link from 'next/link'
 
-const Layout: React.FC<{ background?: string; cornerColor?: string }> = ({
+interface IPropsLayout {
+  background?: string
+  cornerColor?: string
+  padding?: boolean
+  home?: boolean
+}
+
+const Layout: React.FC<IPropsLayout> = ({
   children,
   background,
   cornerColor,
+  padding,
+  home,
 }) => {
   return (
-    <Background background={background}>
+    <Background background={background} padding={padding}>
+      <HeaderContainer>
+        <ul>
+          {!home ? (
+            <li>
+              <Link href="/">
+                <a>Home</a>
+              </Link>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link href="/sign-up">
+                  <a>Sign Up</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/sign-in">
+                  <a>Sign In</a>
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </HeaderContainer>
       <GithubCorner
         bannerColor={cornerColor ? cornerColor : UTILS.theme.colors.mainBg}
         href={UTILS.github}

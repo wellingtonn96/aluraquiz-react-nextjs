@@ -50,7 +50,7 @@ export const Container = styled(Box)<IPropsCardQuiz>`
     border-top: transparent;
     padding: 25px;
 
-    p {
+    > p {
       font-weight: bold;
       margin-bottom: 20px;
     }
@@ -80,7 +80,7 @@ export const HeaderCardQuiz = styled.div<IPropsHeaderQuiz>`
   display: flex;
   align-items: center;
 
-  p {
+  > p {
     padding: 18px 0;
     opacity: 0.8;
     color: ${props =>

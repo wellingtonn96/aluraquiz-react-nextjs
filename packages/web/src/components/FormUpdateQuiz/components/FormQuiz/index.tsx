@@ -33,7 +33,7 @@ const FormQuiz: React.FC<{
   }
 
   return (
-    <Layout>
+    <Layout padding={true}>
       <CreateQuizContainer>
         <CardQuiz header="Adicione um novo quiz" width="450px">
           <form

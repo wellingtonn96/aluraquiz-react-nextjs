@@ -37,7 +37,7 @@ const FormTheme: React.FC<{
   }
 
   return (
-    <Layout>
+    <Layout padding={true}>
       <CreateQuizContainer>
         <CardQuiz header="Crie o tema do quiz" width="450px">
           <form key={2} onSubmit={handleSubmitTheme(handleSubmitFormTheme)}>

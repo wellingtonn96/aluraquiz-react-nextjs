@@ -170,7 +170,7 @@ const FormQuestion: React.FC<{
   }
 
   return (
-    <Layout>
+    <Layout padding={true}>
       <CreateQuizContainer>
         <CardQuiz header="Atualizar questão!" width="450px">
           <form onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}>

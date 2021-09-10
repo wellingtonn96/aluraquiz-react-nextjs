@@ -23,13 +23,13 @@ Quiz App is an application that allows you to create custom quizzes, update and 
 This app features all the latest tools and practices in web development!
 
 - :large_blue_circle: **ReactJs** —React. js/React is an open-source frontend framework that is based on JavaScript, developed by Facebook, and best known for its virtual DOM feature.
-- :black_circle: **NextJs** —Next. js is an open-source development framework built on top of Node. js enabling React based web applications functionalities such as server-side rendering and generating static websites (nextjs.org).
+- :black_circle: **NextJs** — Next.js is an open-source development framework built on top of Node. js enabling React based web applications functionalities such as server-side rendering and generating static websites (nextjs.org).
 - 💹 **Node Js** — Node. js is primarily used for non-blocking, event-driven servers, due to its single-threaded nature. It's used for traditional web sites and back-end API services, but was designed with real-time, push-based architectures in mind.
 - :izakaya_lantern: **NestJS** — Nest (NestJS) is a framework for building efficient, scalable Node. js server-side applications, built with and fully supports TypeScript. 
 - :blue_book: **Postgres** — A cross-platform and open-source relational database.
-- :blue_book: **Typescript** —TypeScript is a strongly typed programming language which builds on JavaScript giving you better tooling at any scale.
+- :blue_book: **Typescript** — TypeScript is a strongly typed programming language which builds on JavaScript giving you better tooling at any scale.
 - :orthodox_cross: **Heroku** — Heroku is a platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.
-- :black_circle: **Vercel** Vercel is the best place to deploy any frontend app. Start by deploying with zero configuration to our global edge network. Scale dynamically to millions of pages without breaking a sweat.
+- :black_circle: **Vercel** — Vercel is the best place to deploy any frontend app. Start by deploying with zero configuration to our global edge network. Scale dynamically to millions of pages without breaking a sweat.
 
 ## Getting started
 
