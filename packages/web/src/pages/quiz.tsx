@@ -54,6 +54,7 @@ const QuizPage: React.FC<{
         <Layout
           background={data.img_bg_url}
           cornerColor={dataQuiz.theme.mainBg}
+          padding={true}
         >
           <CardQuiz
             background={data.img_bg_url}
@@ -125,7 +126,7 @@ const QuizPage: React.FC<{
           </CardQuiz>
         </Layout>
       ) : (
-        <Layout background={data.img_bg_url}>
+        <Layout background={data.img_bg_url} padding={true}>
           <CardQuiz
             background={data.bg_img_url}
             header="Este quiz não possui questões!"
