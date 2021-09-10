@@ -4,7 +4,7 @@ export const UTILS = {
   theme: {
     colors: {
       primary: '#171B35',
-      secondary: '#E91EB0',
+      secondary: '#E91E63',
       mainBg: '#3F51B5',
       contrastText: '#FFFFFF',
       wrong: '#FF5722',
