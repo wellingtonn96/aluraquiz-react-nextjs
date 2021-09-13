@@ -1,11 +1,28 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import CardQuiz from '../../../CardQuiz'
+import styled from 'styled-components'
 import { ButtonStyled } from '../../../Button/styled'
 import api from '../../../../services/api'
 import router from 'next/router'
 import Layout from '../../../Layout'
 import { CreateQuizContainer } from '../../../../pages/update/[id]'
+import InputStyled from '../../../InputStyled'
+import theme from '../../../../styles/theme'
+
+const TextAreaStyled = styled.textarea`
+  width: 100%;
+  height: 80px;
+  display: flex;
+  border-radius: 5px;
+  outline: 0;
+  background: transparent;
+  border: 1px solid ${theme.colors.mainBg};
+  color: ${theme.colors.contrastText};
+  padding: 0 10px;
+  font-size: 18px;
+  margin: 10px 0;
+`
 
 const FormQuiz: React.FC<{
   data: any
@@ -41,21 +58,21 @@ const FormQuiz: React.FC<{
             onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)}
             action=""
           >
-            <input
+            <InputStyled
               {...registerQuiz('title_quiz', { required: true })}
               placeholder="Titulo"
               defaultValue={data.title}
             />
-            <input
+            <InputStyled
               {...registerQuiz('img_bg_url', { required: true })}
               placeholder="URL da imagem de fundo"
               defaultValue={data.img_bg_url}
             />
-            <textarea
+            <TextAreaStyled
               {...registerQuiz('description_quiz', { required: true })}
               placeholder="Descrição"
               defaultValue={data.description}
-            ></textarea>
+            />
             <ButtonStyled type="submit">Atualizar quiz</ButtonStyled>
           </form>
         </CardQuiz>

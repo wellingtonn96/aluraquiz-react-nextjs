@@ -54,7 +54,7 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
         try {
           await api.delete(`quiz/${id}`)
 
-          router.push(`/`)
+          router.push(`/home`)
         } catch (error) {
           alert(JSON.stringify({ err: error.message }))
         }

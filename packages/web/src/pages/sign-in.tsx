@@ -1,6 +1,5 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import router from 'next/router'
 import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
 import { ButtonStyled } from '../components/Button/styled'
@@ -8,6 +7,7 @@ import styled from 'styled-components'
 import theme from '../styles/theme'
 import { FaLock, FaUser } from 'react-icons/fa'
 import Link from 'next/link'
+import InputStyled from '../components/InputStyled'
 
 const SignInContainer = styled.div`
   width: 100%;
@@ -34,27 +34,6 @@ export const FormContainer = styled.div`
     }
   }
 
-  div.input-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 50px;
-    border: 1px solid ${theme.colors.mainBg};
-    padding: 0 10px;
-    border-radius: 5px;
-    margin: 20px 0;
-
-    input {
-      width: 100%;
-      padding-left: 10px;
-      color: ${theme.colors.contrastText};
-      border: 0;
-      outline: 0;
-      background: transparent;
-      font-size: 18px;
-    }
-  }
-
   > p {
     margin: 15px 0;
     font-weight: bold;
@@ -74,9 +53,7 @@ const SignInPage: React.FC = () => {
 
   const handleSubmitFormQuiz = async dataQuiz => {
     try {
-      console.log(dataQuiz)
-
-      router.back()
+      alert(JSON.stringify(dataQuiz))
     } catch (error) {
       return console.log(error)
     }
@@ -89,20 +66,16 @@ const SignInPage: React.FC = () => {
           <FormContainer>
             <p>FAÇA SEU LOGIN</p>
             <form onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)} action="">
-              <div className="input-container">
-                <FaUser size={18} />
-                <input
-                  {...registerQuiz('username', { required: true })}
-                  placeholder="Username"
-                />
-              </div>
-              <div className="input-container">
-                <FaLock size={18} />
-                <input
-                  {...registerQuiz('password', { required: true })}
-                  placeholder="Password"
-                />
-              </div>
+              <InputStyled
+                Icon={FaUser}
+                placeholder="Username"
+                {...registerQuiz('username', { required: true })}
+              />
+              <InputStyled
+                Icon={FaLock}
+                {...registerQuiz('password', { required: true })}
+                placeholder="Senha"
+              />
               {/* <a href="">Esqueci minha senha</a> */}
               <ButtonStyled type="submit">Sign In</ButtonStyled>
             </form>

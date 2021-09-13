@@ -7,10 +7,10 @@ import CardQuiz from '../components/CardQuiz'
 import { ButtonStyled } from '../components/Button/styled'
 import styled from 'styled-components'
 import theme from '../styles/theme'
-import { FaLock, FaUser } from 'react-icons/fa'
 import Link from 'next/link'
+import InputStyled from '../components/InputStyled'
 
-const SignInContainer = styled.div`
+const SignUpContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -35,20 +35,6 @@ export const FormContainer = styled.div`
     }
   }
 
-  input {
-    width: 100%;
-    height: 50px;
-    border: 1px solid ${theme.colors.mainBg};
-    padding: 0 15px;
-    border-radius: 5px;
-    margin: 15px 0;
-    width: 100%;
-    color: ${theme.colors.contrastText};
-    outline: 0;
-    background: transparent;
-    font-size: 18px;
-  }
-
   > p {
     margin: 15px 0;
     font-weight: bold;
@@ -61,7 +47,7 @@ export const FormContainer = styled.div`
   }
 `
 
-const SignInPage: React.FC = () => {
+const SignUpPage: React.FC = () => {
   const { handleSubmit: handleSubmitQuiz, register: registerQuiz } = useForm({
     mode: 'onBlur',
   })
@@ -78,27 +64,27 @@ const SignInPage: React.FC = () => {
 
   return (
     <Layout padding={true}>
-      <SignInContainer>
+      <SignUpContainer>
         <CardQuiz header="Criar conta" width="450px">
           <FormContainer>
             <p>CRIE UMA CONTA</p>
             <form onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)} action="">
-              <input
+              <InputStyled
                 {...registerQuiz('name', { required: true })}
                 placeholder="Nome"
               />
 
-              <input
+              <InputStyled
                 {...registerQuiz('username', { required: true })}
                 placeholder="Username"
               />
 
-              <input
+              <InputStyled
                 {...registerQuiz('email', { required: true })}
                 placeholder="E-mail"
               />
 
-              <input
+              <InputStyled
                 {...registerQuiz('password', { required: true })}
                 placeholder="Senha"
               />
@@ -115,9 +101,9 @@ const SignInPage: React.FC = () => {
             </p>
           </FormContainer>
         </CardQuiz>
-      </SignInContainer>
+      </SignUpContainer>
     </Layout>
   )
 }
 
-export default SignInPage
+export default SignUpPage
