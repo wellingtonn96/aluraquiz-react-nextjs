@@ -15,5 +15,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     migrationsDir: __dirname + '/../shared/database/typeorm/migrations',
   },
   synchronize: false,
-  ssl: { rejectUnauthorized: false },
+  // ssl: { rejectUnauthorized: false },
 };

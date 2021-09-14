@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-@Entity()
+@Entity('questions')
 class Questions extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id?: string;

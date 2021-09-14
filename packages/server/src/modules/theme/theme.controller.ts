@@ -8,10 +8,8 @@ export class ThemeQuizController {
   constructor(private themeQuizService: ThemeQuizService) {}
 
   @Post()
-  async createQuestion(
-    @Body() CreateThemeQuizDTO: CreateThemeQuizDTO,
-  ): Promise<ThemeQuiz> {
-    return await this.themeQuizService.createThemeQuiz(CreateThemeQuizDTO);
+  async createQuestion(@Body() data: CreateThemeQuizDTO): Promise<ThemeQuiz> {
+    return await this.themeQuizService.createThemeQuiz(data);
   }
 
   @Get()
