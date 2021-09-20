@@ -8,7 +8,7 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Post()
-  async createUser(@Body() data: CreateUserDTO): Promise<User | undefined> {
+  async signUp(@Body() data: CreateUserDTO): Promise<User | undefined> {
     return this.userService.createUser(data);
   }
 }
