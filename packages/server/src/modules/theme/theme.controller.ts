@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateThemeQuizDTO } from './dto/CreateThemeQuizDTO';
 import { ThemeQuiz } from './entities/theme.repository';
 import { IThemeUpdate, ThemeQuizService } from './theme.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('themeQuiz')
+@UseGuards(AuthGuard())
 export class ThemeQuizController {
   constructor(private themeQuizService: ThemeQuizService) {}
 
