@@ -1,8 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateQuizDto } from './dto/createQuiz.dto';
+import { CreateQuizDto, StatusQuiz } from './dto/createQuiz.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Quiz } from './entities/Quiz';
 import { QuizRepository } from './quiz.repository';
+import { ThemeQuizRepository } from '../theme/theme.repository';
+import { ThemeQuizService } from '../theme/theme.service';
+import { CreateUserDTO } from '../users/dto/createUserDTO.';
 
 export interface IQuiz {
   id: string;
@@ -29,17 +32,30 @@ export interface IQuizUpdate {
 export class QuizService {
   constructor(
     @InjectRepository(QuizRepository)
-    private quisRepository: QuizRepository, // private themeRepository: ThemeQuizRepository,
+    private quizRepository: QuizRepository,
+    private themeQuizRepository: ThemeQuizRepository,
   ) {}
 
   async createQuiz(data: CreateQuizDto): Promise<Quiz> {
-    const quiz = this.quisRepository.create(data);
+    const theme = await this.themeQuizRepository.findOne(data.themeId);
 
-    return await this.quisRepository.save(quiz);
+    if (!theme) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'This theme not exits!',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const quiz = this.quizRepository.create(data);
+
+    return await this.quizRepository.save(quiz);
   }
 
   async getQuizes(): Promise<Quiz[]> {
-    const quiz = await this.quisRepository.find({
+    const quiz = await this.quizRepository.find({
       select: [
         'id',
         'img_bg_url',
@@ -55,7 +71,7 @@ export class QuizService {
   }
 
   async getOneQuizById(id: string): Promise<Quiz> {
-    const findQuiz = await this.quisRepository.findOne(id);
+    const findQuiz = await this.quizRepository.findOne(id);
 
     if (!findQuiz) {
       throw new HttpException(
@@ -67,8 +83,8 @@ export class QuizService {
       );
     }
 
-    this.quisRepository;
-    const quiz = await this.quisRepository.findOne({
+    this.quizRepository;
+    const quiz = await this.quizRepository.findOne({
       select: [
         'id',
         'img_bg_url',
@@ -93,7 +109,7 @@ export class QuizService {
     id: string;
     themeId: string;
   }): Promise<Quiz | undefined> {
-    const quiz = await this.quisRepository.findOne(id);
+    const quiz = await this.quizRepository.findOne(id);
 
     if (!quiz) {
       throw new HttpException(
@@ -107,7 +123,7 @@ export class QuizService {
 
     quiz.themeId = themeId;
 
-    await this.quisRepository.save(quiz);
+    await this.quizRepository.save(quiz);
 
     return quiz;
   }
@@ -133,7 +149,7 @@ export class QuizService {
 
     const assignQuiz = Object.assign(findQuiz, quiz);
 
-    const quizUpdated = this.quisRepository.save(assignQuiz);
+    const quizUpdated = this.quizRepository.save(assignQuiz);
 
     return quizUpdated;
   }
@@ -151,8 +167,28 @@ export class QuizService {
       );
     }
 
-    const removedQuiz = await this.quisRepository.remove(findQuiz);
+    const removedQuiz = await this.quizRepository.remove(findQuiz);
 
     return removedQuiz;
+  }
+
+  async updateStatusQuiz({ id, status }: { id: string; status: StatusQuiz }) {
+    const quiz = await this.quizRepository.findOne(id);
+
+    if (!quiz) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Quiz with this id not exits!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    Object.assign(quiz, status);
+
+    const quizUpdated = this.quizRepository.save(quiz);
+
+    return quizUpdated;
   }
 }

@@ -9,8 +9,12 @@ import {
   Delete,
   HttpException,
   HttpStatus,
+  UseGuards,
+  Headers,
+  Request,
 } from '@nestjs/common';
-import { CreateQuizDto } from './dto/createQuiz.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { CreateQuizDto, StatusQuiz } from './dto/createQuiz.dto';
 import { Quiz } from './entities/Quiz';
 import { IQuizUpdate, QuizService } from './quiz.service';
 
@@ -19,7 +23,14 @@ export class QuizController {
   constructor(private quizService: QuizService) {}
 
   @Post('/')
-  async createQuiz(@Body() createQuizDto: CreateQuizDto): Promise<Quiz> {
+  @UseGuards(AuthGuard())
+  async createQuiz(
+    @Body() createQuizDto: CreateQuizDto,
+    @Request() request,
+  ): Promise<Quiz> {
+    const { user } = request;
+    console.log(user);
+    createQuizDto.userId = user.id;
     return await this.quizService.createQuiz(createQuizDto);
   }
 
@@ -34,6 +45,7 @@ export class QuizController {
   }
 
   @Patch('/:id')
+  @UseGuards(AuthGuard())
   async updateQuizThemeId(
     @Param('id') id: string,
     @Body() data: string,
@@ -43,12 +55,23 @@ export class QuizController {
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard())
   async updateQuiz(@Param('id') id: string, @Body() data: IQuizUpdate) {
     return await this.quizService.updateQuizById({ id, quiz: data });
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   async removeQuiz(@Param('id') id: string): Promise<Quiz> {
     return await this.quizService.removeQuizById(id);
+  }
+
+  @Patch('/status/:id')
+  @UseGuards(AuthGuard())
+  async updateStatusQuiz(
+    @Param('id') id: string,
+    @Body() status: StatusQuiz,
+  ): Promise<Quiz> {
+    return await this.quizService.updateStatusQuiz({ id, status });
   }
 }

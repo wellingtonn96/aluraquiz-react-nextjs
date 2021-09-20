@@ -11,6 +11,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
+import { StatusQuiz } from '../dto/createQuiz.dto';
 
 @Entity('quiz')
 class Quiz extends BaseEntity {
@@ -29,9 +30,15 @@ class Quiz extends BaseEntity {
   @Column()
   themeId: string;
 
+  @Column()
+  userId: string;
+
   @OneToOne(() => ThemeQuiz)
   @JoinColumn({ name: 'themeId' })
   theme: ThemeQuiz;
+
+  @Column()
+  status: StatusQuiz;
 
   @Column()
   img_bg_url: string;
