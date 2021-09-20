@@ -6,12 +6,15 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/createQuestion.dto';
 import { Questions } from './entities/question.repository';
 import { IQuestionUpdate, QuestionService } from './question.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('question')
+@UseGuards(AuthGuard())
 export class QuestionController {
   constructor(private questionService: QuestionService) {}
 
