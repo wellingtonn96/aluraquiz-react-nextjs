@@ -70,6 +70,25 @@ export class QuizService {
     return quiz;
   }
 
+  async getQuizUser(userId: string): Promise<Quiz[]> {
+    const quiz = await this.quizRepository.find({
+      select: [
+        'id',
+        'img_bg_url',
+        'description',
+        'title',
+        'theme',
+        'updated_at',
+        'created_at',
+      ],
+      relations: ['questions', 'theme'],
+      where: {
+        userId,
+      },
+    });
+    return quiz;
+  }
+
   async getOneQuizById(id: string): Promise<Quiz> {
     const findQuiz = await this.quizRepository.findOne(id);
 

@@ -29,9 +29,16 @@ export class QuizController {
     @Request() request,
   ): Promise<Quiz> {
     const { user } = request;
-    console.log(user);
     createQuizDto.userId = user.id;
     return await this.quizService.createQuiz(createQuizDto);
+  }
+
+  @Get('/user')
+  @UseGuards(AuthGuard())
+  async getQuizUser(@Request() request): Promise<Quiz[]> {
+    const { user } = request;
+    const userId = user.id;
+    return await this.quizService.getQuizUser(userId);
   }
 
   @Get()
