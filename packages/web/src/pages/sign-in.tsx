@@ -5,9 +5,10 @@ import CardQuiz from '../components/CardQuiz'
 import { ButtonStyled } from '../components/Button/styled'
 import styled from 'styled-components'
 import theme from '../styles/theme'
-import { FaLock, FaUser } from 'react-icons/fa'
+import { FaLock, FaEnvelope } from 'react-icons/fa'
 import Link from 'next/link'
 import InputStyled from '../components/InputStyled'
+import { useAuth } from '../hooks/Auth'
 
 const SignInContainer = styled.div`
   width: 100%;
@@ -47,13 +48,15 @@ export const FormContainer = styled.div`
 `
 
 const SignInPage: React.FC = () => {
+  const { signIn } = useAuth()
+
   const { handleSubmit: handleSubmitQuiz, register: registerQuiz } = useForm({
     mode: 'onBlur',
   })
 
   const handleSubmitFormQuiz = async dataQuiz => {
     try {
-      alert(JSON.stringify(dataQuiz))
+      await signIn(dataQuiz)
     } catch (error) {
       return console.log(error)
     }
@@ -67,9 +70,10 @@ const SignInPage: React.FC = () => {
             <p>FAÇA SEU LOGIN</p>
             <form onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)} action="">
               <InputStyled
-                Icon={FaUser}
-                placeholder="Username"
-                {...registerQuiz('username', { required: true })}
+                Icon={FaEnvelope}
+                type="email"
+                placeholder="E-mail"
+                {...registerQuiz('email', { required: true })}
               />
               <InputStyled
                 Icon={FaLock}
