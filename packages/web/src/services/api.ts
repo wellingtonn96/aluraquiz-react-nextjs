@@ -1,8 +1,23 @@
 import axios from 'axios'
 import { UTILS } from '../constants/utils'
+import { parseCookies } from 'nookies'
 
-const api = axios.create({
-  baseURL: UTILS.api,
-})
+export const getApiClient = (ctx?: any) => {
+  const { ['quiz-auth.token']: token } = parseCookies(ctx)
 
-export default api
+  const api = axios.create({
+    baseURL: UTILS.api,
+  })
+
+  api.interceptors.request.use(config => {
+    console.log(config)
+
+    return config
+  })
+
+  if (token) {
+    api.defaults.headers['Authorization'] = `Bearer ${token}`
+  }
+
+  return api
+}
