@@ -1,7 +1,8 @@
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React from 'react'
 import FormTheme from '../../../components/FormUpdateQuiz/components/FormTheme'
-import api from '../../../services/api'
+import { getApiClient } from '../../../services/api'
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 
 const UpadateThemePage: React.FC<{
   data: any
@@ -13,28 +14,29 @@ const UpadateThemePage: React.FC<{
   )
 }
 
-export async function getServerSideProps({
-  query,
-}: {
-  query: {
-    id: string
-  }
-}) {
-  try {
-    const response = await api.get(`/themeQuiz/${query.id}`)
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const api = getApiClient(ctx)
 
-    const data = response.data
+  const { ['quiz-auth.token']: token } = parseCookies(ctx)
 
+  if (!token) {
     return {
-      props: {
-        id: query.id,
-        data,
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
       },
     }
-  } catch (error) {
-    return {
-      error: error.message,
-    }
+  }
+
+  const response = await api.get(`/themeQuiz/${ctx.query.id}`)
+
+  const data = response.data
+
+  return {
+    props: {
+      id: ctx.query.id,
+      data,
+    },
   }
 }
 

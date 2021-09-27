@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
 import CardQuiz from '../components/CardQuiz'
 import { ButtonStyled } from '../components/Button/styled'
-import api from '../services/api'
+import { getApiClient } from '../services/api'
 import { FiEdit, FiTrash } from 'react-icons/fi'
-import { UTILS } from '../constants/utils'
 import ReactLoading from 'react-loading'
 import theme from '../styles/theme'
+import { parseCookies } from 'nookies'
+import { GetServerSideProps } from 'next'
 
 const HomeContainer = styled.div`
   display: flex;
@@ -52,6 +53,8 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
       text: 'Deletar',
       onclick: async (id: string) => {
         try {
+          const api = getApiClient()
+
           await api.delete(`quiz/${id}`)
 
           router.push(`/home`)
@@ -113,22 +116,25 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
 
 export default HomePage
 
-export async function getServerSideProps() {
-  try {
-    const res = await fetch(`${UTILS.api}/quiz`)
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const api = getApiClient(ctx)
 
-    const response = await res.json()
+  const { ['quiz-auth.token']: token } = parseCookies(ctx)
 
+  if (!token) {
     return {
-      props: {
-        quizes: response,
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
       },
     }
-  } catch (error) {
-    return {
-      props: {
-        quizes: null,
-      },
-    }
+  }
+
+  const response = await api('quiz/user')
+
+  return {
+    props: {
+      quizes: response.data,
+    },
   }
 }

@@ -5,7 +5,7 @@ import CardQuiz from '../../../CardQuiz'
 import { ButtonStyled } from '../../../Button/styled'
 import theme from '../../../../styles/theme'
 import { useRouter } from 'next/router'
-import api from '../../../../services/api'
+import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import styled from 'styled-components'
 import { UTILS } from '../../../../constants/utils'
@@ -101,6 +101,8 @@ const FormQuestion: React.FC<{
   const handleSubmitFormQuestions = async dataQuestion => {
     try {
       !rightAnswer && new Error()
+
+      const api = getApiClient()
 
       await api.post('question', {
         image_url:

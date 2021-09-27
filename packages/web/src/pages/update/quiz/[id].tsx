@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import FormQuiz from '../../../components/FormUpdateQuiz/components/FormQuiz'
 
-import api from '../../../services/api'
+import { getApiClient } from '../../../services/api'
 
 const UpdateQuizPage: React.FC<{
   id: string
@@ -23,6 +23,8 @@ export async function getServerSideProps({
   }
 }) {
   try {
+    const api = getApiClient()
+
     const response = await api.get(`/quiz/${query.id}`)
 
     const data = response.data

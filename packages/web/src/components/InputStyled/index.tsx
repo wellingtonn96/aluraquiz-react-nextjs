@@ -34,13 +34,18 @@ export const InputContainer = styled.div`
 
 interface IPropsInput extends HtmlHTMLAttributes<HTMLInputElement> {
   Icon?: IconType
+  type?: string
 }
 
-const InputStyled: React.FC<IPropsInput> = ({ Icon, ...rest }) => {
+const InputStyled: React.FC<IPropsInput> = ({
+  type = 'text',
+  Icon,
+  ...rest
+}) => {
   return (
     <InputContainer>
       {Icon && <Icon size={18} />}
-      <input {...rest} />
+      <input type={type} {...rest} />
     </InputContainer>
   )
 }

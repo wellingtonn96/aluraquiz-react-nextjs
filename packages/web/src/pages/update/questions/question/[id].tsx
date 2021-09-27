@@ -1,7 +1,7 @@
 import React from 'react'
 import FormQuestion from '../../../../components/FormUpdateQuiz/components/FormQuestion'
 
-import api from '../../../../services/api'
+import { getApiClient } from '../../../../services/api'
 
 const QuestionQuizPage: React.FC<{
   data: any
@@ -21,6 +21,8 @@ export async function getServerSideProps({
   }
 }) {
   try {
+    const api = getApiClient()
+
     const response = await api.get(`/question/${query.id}`)
 
     const data = response.data

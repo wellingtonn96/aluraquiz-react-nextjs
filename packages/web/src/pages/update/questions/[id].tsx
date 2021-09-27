@@ -3,7 +3,7 @@ import React from 'react'
 import { ButtonStyled } from '../../../components/Button/styled'
 import CardQuiz from '../../../components/CardQuiz'
 import Layout from '../../../components/Layout'
-import api from '../../../services/api'
+import { getApiClient } from '../../../services/api'
 import { CreateQuizContainer } from '../[id]'
 
 const UpdateQuestionPage: React.FC<{
@@ -14,6 +14,8 @@ const UpdateQuestionPage: React.FC<{
 
   const deleteQuestion = async (id: string) => {
     try {
+      const api = getApiClient()
+
       await api.delete(`question/${id}`)
 
       router.push(`/update/questions/${data.id}`)
@@ -64,6 +66,8 @@ export async function getServerSideProps({
   }
 }) {
   try {
+    const api = getApiClient()
+
     const response = await api.get(`/quiz/${query.id}`)
 
     const data = response.data

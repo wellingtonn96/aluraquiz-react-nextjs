@@ -6,9 +6,11 @@ import theme from '../../styles/theme'
 import { useRouter } from 'next/router'
 import CardQuiz from '../../components/CardQuiz'
 import { ButtonStyled } from '../../components/Button/styled'
-import api from '../../services/api'
+import { getApiClient } from '../../services/api'
 import { useQuiz } from '../../hooks/Quiz'
 import FormQuestion from '../../components/FormCreateQuiz/components/FormQuestion'
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 
 interface IPropsCreateQuiz {
   indexRightAnswer?: number
@@ -160,28 +162,29 @@ const UpdateQuiz: React.FC<{
   )
 }
 
-export async function getServerSideProps({
-  query,
-}: {
-  query: {
-    id: string
-  }
-}) {
-  try {
-    const response = await api.get(`/quiz/${query.id}`)
+export default UpdateQuiz
 
-    const data = response.data
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const api = getApiClient(ctx)
 
+  const { ['quiz-auth.token']: token } = parseCookies(ctx)
+
+  if (!token) {
     return {
-      props: {
-        data,
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
       },
     }
-  } catch (error) {
-    return {
-      error: error.message,
-    }
+  }
+
+  const response = await api.get(`/quiz/${ctx.query.id}`)
+
+  const data = response.data
+
+  return {
+    props: {
+      data,
+    },
   }
 }
-
-export default UpdateQuiz

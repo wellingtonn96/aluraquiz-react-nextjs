@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import CardQuiz from '../../../CardQuiz'
 import styled from 'styled-components'
 import { ButtonStyled } from '../../../Button/styled'
-import api from '../../../../services/api'
+import { getApiClient } from '../../../../services/api'
 import router from 'next/router'
 import Layout from '../../../Layout'
 import { CreateQuizContainer } from '../../../../pages/update/[id]'
@@ -37,6 +37,8 @@ const FormQuiz: React.FC<{
 
   const handleSubmitFormQuiz = async dataQuiz => {
     try {
+      const api = getApiClient()
+
       await api.put(`quiz/${data.id}`, {
         title: dataQuiz.title_quiz,
         description: dataQuiz.description_quiz,

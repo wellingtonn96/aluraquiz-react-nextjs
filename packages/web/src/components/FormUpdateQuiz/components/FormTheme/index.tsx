@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import CardQuiz from '../../../CardQuiz'
 import { ButtonStyled } from '../../../Button/styled'
-import api from '../../../../services/api'
+import { getApiClient } from '../../../../services/api'
 import router from 'next/router'
 import Layout from '../../../Layout'
 import { CreateQuizContainer } from '../../../../pages/update/[id]'
@@ -20,6 +20,8 @@ const FormTheme: React.FC<{
 
   const handleSubmitFormTheme = async dataTheme => {
     try {
+      const api = getApiClient()
+
       await api.put(`themeQuiz/${data.id}`, {
         primary: dataTheme.primary,
         mainBg: dataTheme.mainBg,

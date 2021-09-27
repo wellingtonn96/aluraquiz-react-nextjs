@@ -6,7 +6,7 @@ import CardQuiz from '../../../CardQuiz'
 import { ButtonStyled } from '../../../Button/styled'
 import theme from '../../../../styles/theme'
 import { useRouter } from 'next/router'
-import api from '../../../../services/api'
+import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import { UTILS } from '../../../../constants/utils'
 import Layout from '../../../Layout'
@@ -134,6 +134,8 @@ const FormQuestion: React.FC<{
 
   const handleSubmitFormQuestions = async dataQuestion => {
     try {
+      const api = getApiClient()
+
       await api.put(`question/${data.id}`, {
         image_url:
           'https://thumbs.gfycat.com/IncredibleGrouchyEarwig-size_restricted.gif',

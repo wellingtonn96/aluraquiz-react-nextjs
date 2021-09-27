@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import CardQuiz from '../../../CardQuiz'
 import { ButtonStyled } from '../../../Button/styled'
-import api from '../../../../services/api'
+import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import { UTILS } from '../../../../constants/utils'
 import styled from 'styled-components'
@@ -34,6 +34,8 @@ const FormTheme: React.FC = () => {
 
   const handleSubmitFormTheme = async dataTheme => {
     try {
+      const api = getApiClient()
+
       const response = await api.post('themeQuiz', {
         primary: dataTheme.primary,
         mainBg: dataTheme.mainBg,
