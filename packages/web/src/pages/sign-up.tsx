@@ -9,6 +9,8 @@ import styled from 'styled-components'
 import theme from '../styles/theme'
 import Link from 'next/link'
 import InputStyled from '../components/InputStyled'
+import { getApiClient } from '../services/api'
+import { useAuth } from '../hooks/Auth'
 
 const SignUpContainer = styled.div`
   width: 100%;
@@ -48,17 +50,24 @@ export const FormContainer = styled.div`
 `
 
 const SignUpPage: React.FC = () => {
+  const { signIn } = useAuth()
+
   const { handleSubmit: handleSubmitQuiz, register: registerQuiz } = useForm({
     mode: 'onBlur',
   })
 
   const handleSubmitFormQuiz = async dataQuiz => {
     try {
-      console.log(dataQuiz)
+      const api = getApiClient()
 
-      router.back()
+      await api.post('users', dataQuiz)
+
+      signIn({
+        email: dataQuiz.email,
+        password: dataQuiz.password,
+      })
     } catch (error) {
-      return console.log(error)
+      return alert(JSON.stringify(error.message))
     }
   }
 
@@ -80,7 +89,13 @@ const SignUpPage: React.FC = () => {
               />
 
               <InputStyled
+                {...registerQuiz('lastname', { required: true })}
+                placeholder="Sobrenome"
+              />
+
+              <InputStyled
                 {...registerQuiz('email', { required: true })}
+                type="email"
                 placeholder="E-mail"
               />
 
