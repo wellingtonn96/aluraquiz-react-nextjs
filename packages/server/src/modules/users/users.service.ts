@@ -47,4 +47,25 @@ export class UsersService {
 
     return user;
   }
+
+  async getUser(userId: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({
+      select: ['email', 'lastname', 'name', 'username'],
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'User not already exists!',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    return user;
+  }
 }
