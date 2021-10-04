@@ -10,8 +10,6 @@ export const getApiClient = (ctx?: any) => {
   })
 
   api.interceptors.request.use(config => {
-    console.log(config)
-
     return config
   })
 
