@@ -4,9 +4,10 @@ export const UTILS = {
   theme: {
     colors: {
       primary: '#171B35',
-      secondary: '#E91E63',
-      mainBg: '#3F51B5',
+      secondary: '#7954A1',
+      mainBg: '#EFDCF9',
       contrastText: '#FFFFFF',
+      secondaryText: '#333333',
       wrong: '#FF5722',
       success: '#4CAF50',
     },
