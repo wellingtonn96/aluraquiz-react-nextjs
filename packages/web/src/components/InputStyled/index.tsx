@@ -18,7 +18,7 @@ export const InputContainer = styled.div`
     margin-top: 30px !important;
   }
 
-  input {
+  > input {
     width: 100%;
     color: ${theme.colors.contrastText};
     border: 0;

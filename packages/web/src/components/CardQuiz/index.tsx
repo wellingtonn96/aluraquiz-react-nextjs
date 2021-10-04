@@ -90,7 +90,7 @@ const CardQuiz: React.FC<{
             // aria-controls={open ? 'menu-list-grow' : undefined}
             onClick={handleToggle}
           >
-            <FiMoreHorizontal size={25} />
+            <FiMoreHorizontal size={25} color={UTILS.theme.colors.primary} />
           </IconButton>
         )}
       </HeaderCardQuiz>

@@ -1,45 +1,95 @@
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import FormQuiz from '../../../components/FormUpdateQuiz/components/FormQuiz'
-
+import { GetServerSideProps } from 'next'
+import router from 'next/router'
+import { parseCookies } from 'nookies'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { ButtonStyled } from '../../../components/Button/styled'
+import CardQuiz from '../../../components/CardQuiz'
+import Layout from '../../../components/Layout'
 import { getApiClient } from '../../../services/api'
+import { CreateQuizContainer } from '../[id]'
+import { InputStyled, TextAreaStyled } from './styles'
 
 const UpdateQuizPage: React.FC<{
   id: string
   data: any
 }> = ({ data }) => {
+  const { handleSubmit: handleSubmitQuiz, register: registerQuiz } = useForm({
+    mode: 'onBlur',
+  })
+
+  const handleSubmitFormQuiz = async dataQuiz => {
+    try {
+      const api = getApiClient()
+
+      await api.put(`quiz/${data.id}`, {
+        title: dataQuiz.title_quiz,
+        description: dataQuiz.description_quiz,
+        img_bg_url: dataQuiz.img_bg_url,
+      })
+
+      router.back()
+    } catch (error) {
+      return console.log(error)
+    }
+  }
+
   return (
-    <>
-      <FormQuiz data={data} />
-    </>
+    <Layout padding={true}>
+      <CreateQuizContainer>
+        <CardQuiz header="Adicione um novo quiz" width="450px">
+          <form
+            key={1}
+            onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)}
+            action=""
+          >
+            <InputStyled
+              {...registerQuiz('title_quiz', { required: true })}
+              placeholder="Titulo"
+              defaultValue={data.title}
+            />
+            <InputStyled
+              {...registerQuiz('img_bg_url', { required: true })}
+              placeholder="URL da imagem de fundo"
+              defaultValue={data.img_bg_url}
+            />
+            <TextAreaStyled
+              {...registerQuiz('description_quiz', { required: true })}
+              placeholder="Descrição"
+              defaultValue={data.description}
+            />
+            <ButtonStyled type="submit">Atualizar quiz</ButtonStyled>
+          </form>
+        </CardQuiz>
+      </CreateQuizContainer>
+    </Layout>
   )
 }
 
-export async function getServerSideProps({
-  query,
-}: {
-  query: {
-    id: string
-  }
-}) {
-  try {
-    const api = getApiClient()
+export default UpdateQuizPage
 
-    const response = await api.get(`/quiz/${query.id}`)
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const api = getApiClient(ctx)
 
-    const data = response.data
+  const { ['quiz-auth.token']: token } = parseCookies(ctx)
 
+  if (!token) {
     return {
-      props: {
-        id: query.id,
-        data,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     }
-  } catch (error) {
-    return {
-      error: error.message,
-    }
+  }
+
+  const response = await api.get(`/quiz/${ctx.query.id}`)
+
+  const data = response.data
+
+  return {
+    props: {
+      id: ctx.query.id,
+      data,
+    },
   }
 }
-
-export default UpdateQuizPage

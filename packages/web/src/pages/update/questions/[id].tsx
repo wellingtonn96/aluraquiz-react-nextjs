@@ -1,4 +1,6 @@
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
+import { parseCookies } from 'nookies'
 import React from 'react'
 import { ButtonStyled } from '../../../components/Button/styled'
 import CardQuiz from '../../../components/CardQuiz'
@@ -40,7 +42,7 @@ const UpdateQuestionPage: React.FC<{
                   <span>{item.description}</span>
                   <ButtonStyled
                     onClick={() =>
-                      router.push(`/update/questions/question/${item.id}`)
+                      router.push(`/update/questions/update/${item.id}`)
                     }
                   >
                     Atualizar Questão
@@ -58,31 +60,30 @@ const UpdateQuestionPage: React.FC<{
   )
 }
 
-export async function getServerSideProps({
-  query,
-}: {
-  query: {
-    id: string
-  }
-}) {
-  try {
-    const api = getApiClient()
+export default UpdateQuestionPage
 
-    const response = await api.get(`/quiz/${query.id}`)
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const api = getApiClient(ctx)
 
-    const data = response.data
+  const { ['quiz-auth.token']: token } = parseCookies(ctx)
 
+  if (!token) {
     return {
-      props: {
-        id: query.id,
-        data,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     }
-  } catch (error) {
-    return {
-      error: error.message,
-    }
+  }
+
+  const response = await api.get(`/quiz/${ctx.query.id}`)
+
+  const data = response.data
+
+  return {
+    props: {
+      id: ctx.query.id,
+      data,
+    },
   }
 }
-
-export default UpdateQuestionPage

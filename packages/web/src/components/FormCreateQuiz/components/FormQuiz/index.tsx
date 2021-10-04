@@ -1,11 +1,10 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import CardQuiz from '../../../CardQuiz'
-import { ButtonStyled } from '../../../Button/styled'
 import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
-import styled from 'styled-components'
-import theme from '../../../../styles/theme'
+import { TextAreaStyled, InputStyled } from './styles'
+import CardQuiz from '../../../../components/CardQuiz'
+import { ButtonStyled } from '../../../../components/Button/styled'
 
 const FormQuiz: React.FC = () => {
   const { setQuizContext } = useQuiz()
@@ -40,33 +39,6 @@ const FormQuiz: React.FC = () => {
       return console.log(error)
     }
   }
-
-  const InputStyled = styled.input`
-    width: 100%;
-    height: 40px;
-    border-radius: 5px;
-    outline: 0;
-    background: transparent;
-    border: 1px solid ${theme.colors.mainBg};
-    color: ${theme.colors.contrastText};
-    padding: 0 10px;
-    font-size: 18px;
-    margin: 10px 0;
-  `
-
-  const TextAreaStyled = styled.textarea`
-    width: 100%;
-    height: 80px;
-    display: flex;
-    border-radius: 5px;
-    outline: 0;
-    background: transparent;
-    border: 1px solid ${theme.colors.mainBg};
-    color: ${theme.colors.contrastText};
-    padding: 0 10px;
-    font-size: 18px;
-    margin: 10px 0;
-  `
 
   return (
     <CardQuiz header="Adicione um novo quiz" width="450px">

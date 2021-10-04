@@ -1,12 +1,12 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import CardQuiz from '../../../CardQuiz'
-import { ButtonStyled } from '../../../Button/styled'
 import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import { UTILS } from '../../../../constants/utils'
 import styled from 'styled-components'
 import theme from '../../../../styles/theme'
+import CardQuiz from '../../../../components/CardQuiz'
+import { ButtonStyled } from '../../../../components/Button/styled'
 
 const InputStyled = styled.input`
   width: 100%;
