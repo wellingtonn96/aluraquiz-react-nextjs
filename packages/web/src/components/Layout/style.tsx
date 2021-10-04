@@ -15,17 +15,17 @@ export const Background = styled.div<IBackgroundProps>`
             background});
         `
       : css`
-          background: #1e2343; /* fallback for old browsers */
+          background: #24243e; /* fallback for old browsers */
           background: -webkit-linear-gradient(
             to right,
+            #24243e,
             #1e2343,
-            #302b63,
-            #1e2343
+            #24243e
           ); /* Chrome 10-25, Safari 5.1-6 */
           background: linear-gradient(
             to right,
+            #24243e,
             #1e2343,
-            #302b58,
             #24243e
           ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7*/
         `}
@@ -40,9 +40,9 @@ export const Background = styled.div<IBackgroundProps>`
   margin: 0 auto;
 
   > div {
-    max-width: 1180px;
-    height: 100%;
+    max-width: 1140px;
     margin: 0 auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: left;
@@ -51,29 +51,5 @@ export const Background = styled.div<IBackgroundProps>`
       css`
         padding: 80px 20px;
       `}
-  }
-`
-
-export const HeaderContainer = styled.header`
-  position: absolute;
-  top: 50px;
-  right: 80px;
-
-  ul {
-    text-align: right;
-
-    li {
-      display: inline;
-      padding: 0 15px;
-
-      a {
-        color: ${theme.colors.contrastText};
-        text-decoration: none;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
   }
 `
