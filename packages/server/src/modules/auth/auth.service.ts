@@ -37,7 +37,7 @@ export class AuthService {
   }> {
     const userExists = await this.userRepository.findOne({
       where: {
-        email: data.email,
+        username: data.username,
       },
     });
 
@@ -45,7 +45,7 @@ export class AuthService {
       throw new HttpException(
         {
           status: HttpStatus.UNAUTHORIZED,
-          error: 'User with this email not exists!',
+          error: 'User not exists!',
         },
         HttpStatus.UNAUTHORIZED,
       );
