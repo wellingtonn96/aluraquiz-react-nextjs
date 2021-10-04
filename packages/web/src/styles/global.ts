@@ -14,4 +14,8 @@ export default createGlobalStyle`
     color: ${theme.colors.contrastText};
     font-size: 16px;
   }
+
+  button, a {
+    cursor: pointer;
+  }
 `
