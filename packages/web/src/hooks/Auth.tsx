@@ -1,15 +1,16 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
-import { setCookie, parseCookies } from 'nookies'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import { getApiClient } from '../services/api'
 import Router from 'next/router'
 
 type IAuthContextData = {
-  signIn: ({ email, password }: SignInData) => Promise<void>
+  signIn: ({ username, password }: SignInData) => Promise<void>
+  signOut: (ctx?: any) => void
   user: UserData
 }
 
 type SignInData = {
-  email: string
+  username: string
   password: string
 }
 
@@ -46,12 +47,12 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   }, [])
 
-  const signIn = async ({ email, password }: SignInData) => {
+  const signIn = async ({ username, password }: SignInData) => {
     try {
       const api = getApiClient()
 
       const response = await api.post('/auth', {
-        email,
+        username,
         password,
       })
 
@@ -69,8 +70,14 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
+  const signOut = (ctx?: any) => {
+    destroyCookie(ctx, 'quiz-auth.token')
+    setUser(null)
+    return Router.push('/')
+  }
+
   return (
-    <AuthContext.Provider value={{ signIn, user }}>
+    <AuthContext.Provider value={{ signOut, signIn, user }}>
       {children}
     </AuthContext.Provider>
   )
