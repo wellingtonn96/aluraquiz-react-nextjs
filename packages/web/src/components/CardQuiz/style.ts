@@ -25,9 +25,10 @@ export const Container = styled(Box)<IPropsCardQuiz>`
       ? props.themeCustom.contrastText
       : theme.colors.contrastText};
   border-radius: 5px;
+  width: ${props => (props.width ? props.width : '350px')};
 
-  @media (min-width: 760px) {
-    width: ${props => (props.width ? props.width : '350px')};
+  @media (max-width: 760px) {
+    width: 100%;
   }
 
   ${props =>
@@ -35,7 +36,6 @@ export const Container = styled(Box)<IPropsCardQuiz>`
     css`
       > div.img-cover {
         background: url(${props.background});
-
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -84,9 +84,7 @@ export const HeaderCardQuiz = styled.div<IPropsHeaderQuiz>`
     padding: 18px 0;
     opacity: 0.8;
     color: ${props =>
-      props.themeCustom
-        ? props.themeCustom.contrastText
-        : theme.colors.contrastText};
+      props.themeCustom ? props.themeCustom.primary : theme.colors.primary};
 
     flex: 1;
   }
