@@ -8,6 +8,7 @@ import { UTILS } from '../constants/utils'
 import ReactLoading from 'react-loading'
 import theme from '../styles/theme'
 import Link from 'next/link'
+import { useAuth } from '../hooks/Auth'
 
 const HomeContainer = styled.div`
   div.main {
@@ -90,6 +91,8 @@ interface IPropsHome {
 }
 
 const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
+  const { user } = useAuth()
+
   const router = useRouter()
 
   function handleSubmit(id: string) {
@@ -97,14 +100,15 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
   }
 
   return (
-    <Layout home={true}>
+    <Layout>
       <ApresentationContainer>
         <div>
           <div>
-            <h1>Building exactly the eCommerce website you want.</h1>
+            <h1>Crie seu quiz personalizado e desafie a galera!</h1>
             <span>
-              WooCommerce is a customizable, open-source eCommerce platform
-              built on WordPress. Get started quickly and make your way.
+              Com a plataforma Quiz Generator não existe limites para a criação
+              dos seus quizes personalizados, seja desafiado ou desafie quem
+              quiser.
             </span>
           </div>
           <div>
@@ -112,9 +116,15 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
               <a className="get-start-link">Começar</a>
             </Link>
             ou
-            <Link href="/home">
-              <a>Crie um novo quiz</a>
-            </Link>
+            {user ? (
+              <Link href="/home">
+                <a>Crie um novo quiz</a>
+              </Link>
+            ) : (
+              <Link href="/sign-in">
+                <a>Crie um novo quiz</a>
+              </Link>
+            )}
           </div>
         </div>
       </ApresentationContainer>
