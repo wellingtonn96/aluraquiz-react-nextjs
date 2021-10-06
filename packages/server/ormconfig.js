@@ -8,7 +8,7 @@ module.exports = {
   "username": process.env.DATABASE_USER,
   "password": process.env.DATABASE_PWD,
   "database": process.env.DATABASE_NAME,
-  // "ssl": { "rejectUnauthorized": false },
+  "ssl": { "rejectUnauthorized": false },
   "migrations": [
     "./src/shared/database/typeorm/migrations/*.{js,ts}"
   ],
