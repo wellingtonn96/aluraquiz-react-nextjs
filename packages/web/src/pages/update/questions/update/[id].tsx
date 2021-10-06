@@ -12,7 +12,7 @@ import { useQuiz } from '../../../../hooks/Quiz'
 
 import { getApiClient } from '../../../../services/api'
 import theme from '../../../../styles/theme'
-import { CreateQuizContainer } from './styles'
+import { CreateQuizContainer } from '../../../../styles/pages/update/questions/update/question.styled'
 
 const QuestionQuizPage: React.FC<{ data: any }> = ({ data }) => {
   const router = useRouter()

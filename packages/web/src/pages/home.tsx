@@ -1,15 +1,15 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Layout from '../../components/Layout'
-import CardQuiz from '../../components/CardQuiz'
-import { ButtonStyled } from '../../components/Button/styled'
-import { getApiClient } from '../../services/api'
+import Layout from '../components/Layout'
+import CardQuiz from '../components/CardQuiz'
+import { ButtonStyled } from '../components/Button/styled'
+import { getApiClient } from '../services/api'
 import { FiEdit, FiTrash } from 'react-icons/fi'
 import ReactLoading from 'react-loading'
-import theme from '../../styles/theme'
+import theme from '../styles/theme'
 import { parseCookies } from 'nookies'
 import { GetServerSideProps } from 'next'
-import { ButtonNewQuizContainer, Container } from './styles'
+import { ButtonNewQuizContainer, Container } from '../styles/pages/home.styled'
 
 interface IPropsHome {
   quizes: any[] | null

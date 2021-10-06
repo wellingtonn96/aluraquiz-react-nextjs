@@ -8,7 +8,10 @@ import CardQuiz from '../../../components/CardQuiz'
 import Layout from '../../../components/Layout'
 import { getApiClient } from '../../../services/api'
 import { CreateQuizContainer } from '../[id]'
-import { InputStyled, TextAreaStyled } from './styles'
+import {
+  InputStyled,
+  TextAreaStyled,
+} from '../../../styles/pages/update/quiz/quiz.styled'
 
 const UpdateQuizPage: React.FC<{
   id: string

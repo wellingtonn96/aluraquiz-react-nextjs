@@ -2,13 +2,12 @@ import React from 'react'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
-import FormQuestion from '../../components/FormCreateQuiz/components/FormQuestion'
-import FormQuiz from '../../components/FormCreateQuiz/components/FormQuiz'
-import FormTheme from '../../components/FormCreateQuiz/components/FormTheme'
-import Layout from '../../components/Layout'
-import { useQuiz } from '../../hooks/Quiz'
-import { getApiClient } from '../../services/api'
-import { CreateQuizContainer } from '../update/[id]'
+import FormQuestion from '../components/FormCreateQuiz/components/FormQuestion'
+import FormQuiz from '../components/FormCreateQuiz/components/FormQuiz'
+import FormTheme from '../components/FormCreateQuiz/components/FormTheme'
+import Layout from '../components/Layout'
+import { useQuiz } from '../hooks/Quiz'
+import { CreateQuizContainer } from './update/[id]'
 
 const CreateQuizPage: React.FC = () => {
   const router = useRouter()
@@ -40,8 +39,6 @@ const CreateQuizPage: React.FC = () => {
 export default CreateQuizPage
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  const api = getApiClient(ctx)
-
   const { ['quiz-auth.token']: token } = parseCookies(ctx)
 
   if (!token) {

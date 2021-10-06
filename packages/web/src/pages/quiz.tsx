@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import Layout from '../../components/Layout'
-import CardQuiz from '../../components/CardQuiz'
-import { Answer, CardQuizContent } from './styles'
-import { ButtonStyled } from '../../components/Button/styled'
+import Layout from '../components/Layout'
+import CardQuiz from '../components/CardQuiz'
+import { Answer, CardQuizContent } from '../styles/pages/quiz.styled'
+import { ButtonStyled } from '../components/Button/styled'
 import { useEffect } from 'react'
-import { UTILS } from '../../constants/utils'
+import { UTILS } from '../constants/utils'
 
 const QuizPage: React.FC<{
   user: string

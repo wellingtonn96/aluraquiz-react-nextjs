@@ -1,13 +1,13 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import Layout from '../../components/Layout'
-import CardQuiz from '../../components/CardQuiz'
-import { ButtonStyled } from '../../components/Button/styled'
+import Layout from '../components/Layout'
+import CardQuiz from '../components/CardQuiz'
+import { ButtonStyled } from '../components/Button/styled'
 import { FaLock, FaUser } from 'react-icons/fa'
 import Link from 'next/link'
-import InputStyled from '../../components/InputStyled'
-import { useAuth } from '../../hooks/Auth'
-import { FormContainer, Container } from './styles'
+import InputStyled from '../components/InputStyled'
+import { useAuth } from '../hooks/Auth'
+import { FormContainer, Container } from '../styles/pages/sign-in.styled'
 
 const SignInPage: React.FC = () => {
   const { signIn } = useAuth()
