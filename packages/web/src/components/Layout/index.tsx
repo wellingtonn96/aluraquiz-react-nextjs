@@ -7,10 +7,12 @@ const Layout: React.FC<{
   padding?: boolean
 }> = ({ children, background, padding }) => {
   return (
-    <Background background={background} padding={padding}>
+    <>
       <Header />
-      <div>{children}</div>
-    </Background>
+      <Background background={background} padding={padding}>
+        <div>{children}</div>
+      </Background>
+    </>
   )
 }
 
