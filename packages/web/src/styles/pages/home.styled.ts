@@ -17,10 +17,33 @@ export const Container = styled.div`
     align-items: center;
     justify-self: center;
   }
+
+  @media (max-width: 760px) {
+    justify-content: center;
+  }
 `
 
 export const ButtonNewQuizContainer = styled.div`
-  padding: 40px 0;
   display: flex;
-  flex-direction: row-reverse;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  margin: 40px 0;
+
+  h1 {
+    flex: 1;
+    font-size: 28px;
+  }
+
+  button {
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    flex-direction: column;
+
+    h1 {
+      margin: 30px 0;
+    }
+  }
 `
