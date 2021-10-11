@@ -4,7 +4,6 @@ import theme from '../../styles/theme'
 
 interface IPropsCardQuiz {
   background?: string
-  width?: string
   themeCustom?: {
     primary?: string
     secondary?: string
@@ -25,7 +24,7 @@ export const Container = styled(Box)<IPropsCardQuiz>`
       ? props.themeCustom.contrastText
       : theme.colors.contrastText};
   border-radius: 5px;
-  width: ${props => (props.width ? props.width : '350px')};
+  width: 350px;
 
   @media (max-width: 760px) {
     width: 100%;
