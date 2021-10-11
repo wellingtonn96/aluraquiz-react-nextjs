@@ -7,7 +7,12 @@ export const Container = styled.header`
   height: 100px;
   top: 0;
 
+  @media (max-width: 760px) {
+    padding: 0 30px;
+  }
+
   > div {
+    max-width: 960px;
     flex-direction: row;
     display: flex;
     align-items: center;
