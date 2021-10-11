@@ -5,7 +5,7 @@ interface IPropsCreateQuiz {
   indexRightAnswer?: number
 }
 
-export const CreateQuizContainer = styled.div<IPropsCreateQuiz>`
+export const Container = styled.div<IPropsCreateQuiz>`
   width: 100%;
   display: flex;
   justify-content: center;
