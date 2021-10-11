@@ -7,7 +7,13 @@ import FormQuiz from '../components/FormCreateQuiz/components/FormQuiz'
 import FormTheme from '../components/FormCreateQuiz/components/FormTheme'
 import Layout from '../components/Layout'
 import { useQuiz } from '../hooks/Quiz'
-import { CreateQuizContainer } from './update/[id]'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+`
 
 const CreateQuizPage: React.FC = () => {
   const router = useRouter()
@@ -27,11 +33,11 @@ const CreateQuizPage: React.FC = () => {
 
   return (
     <Layout padding={true}>
-      <CreateQuizContainer>
+      <Container>
         {!step && <FormQuiz />}
         {step === 2 && <FormTheme />}
         {step === 3 && <FormQuestion handleGoBack={goBack} />}
-      </CreateQuizContainer>
+      </Container>
     </Layout>
   )
 }
