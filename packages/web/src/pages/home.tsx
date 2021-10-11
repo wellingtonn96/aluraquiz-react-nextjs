@@ -54,6 +54,7 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
   return (
     <Layout padding={true}>
       <ButtonNewQuizContainer>
+        <h1>Meus Quizzes</h1>
         <ButtonStyled onClick={() => router.push('/create-quiz')} width="160px">
           Novo quiz
         </ButtonStyled>
@@ -66,7 +67,6 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
               itemId={item.id}
               toggleItems={toggleMenuItems}
               background={item.img_bg_url}
-              width="350px"
             >
               <p>{item.title}</p>
               <span>{item.description}</span>

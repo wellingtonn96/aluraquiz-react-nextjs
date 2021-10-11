@@ -9,6 +9,7 @@ import ReactLoading from 'react-loading'
 import theme from '../styles/theme'
 import Link from 'next/link'
 import { useAuth } from '../hooks/Auth'
+import ImagelustrationImage from '../assets/ilustration.svg'
 
 const HomeContainer = styled.div`
   div.main {
@@ -36,21 +37,45 @@ const HomeContainer = styled.div`
       font-size: 24px;
     }
   }
+
+  @media (max-width: 760px) {
+    justify-content: center;
+    width: 100%;
+    padding: 0 30px;
+  }
 `
 
-const ApresentationContainer = styled.div`
-  height: 100vh;
+const IntroContainer = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
+  height: 100vh;
 
-  > div {
-    width: 700px;
+  @media (max-width: 760px) {
+    flex-direction: column;
+  }
+
+  /* background-color: red; */
+
+  > div:nth-child(2) {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 760px) {
+      display: none;
+    }
+  }
+
+  > div:nth-child(1) {
+    width: 55%;
     display: flex;
     flex-direction: column;
 
     h1 {
-      font-size: 45px;
+      font-size: 35px;
       font-weight: 600;
       margin-bottom: 30px;
     }
@@ -58,30 +83,35 @@ const ApresentationContainer = styled.div`
     span {
       color: #94a2b3;
     }
-  }
 
-  div {
-    margin-top: 35px;
+    div {
+      margin-top: 35px;
 
-    a.get-start-link {
-      background-color: ${theme.colors.secondary};
-      padding: 15px 35px;
-      border-radius: 20px;
-      text-decoration: none;
-      color: ${theme.colors.contrastText};
-      margin-right: 20px;
-      font-weight: bold;
+      a.get-start-link {
+        background-color: ${theme.colors.secondary};
+        padding: 15px 35px;
+        border-radius: 20px;
+        text-decoration: none;
+        color: ${theme.colors.contrastText};
+        margin-right: 20px;
+        font-weight: bold;
+      }
+
+      a:nth-child(2) {
+        text-decoration: none;
+        color: #299ef3;
+        margin-left: 20px;
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
-    a:nth-child(2) {
-      text-decoration: none;
-      color: #299ef3;
-      margin-left: 20px;
-      font-weight: bold;
-
-      &:hover {
-        text-decoration: underline;
-      }
+    @media (max-width: 760px) {
+      width: 100%;
+      padding: 0 30px;
     }
   }
 `
@@ -101,13 +131,13 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
 
   return (
     <Layout>
-      <ApresentationContainer>
+      <IntroContainer>
         <div>
           <div>
             <h1>Crie seu quiz personalizado e desafie a galera!</h1>
             <span>
               Com a plataforma Quiz Generator não existe limites para a criação
-              dos seus quizes personalizados, seja desafiado ou desafie quem
+              dos seus quizzes personalizados, seja desafiado ou desafie quem
               quiser.
             </span>
           </div>
@@ -127,10 +157,13 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
             )}
           </div>
         </div>
-      </ApresentationContainer>
+        <div>
+          <img src={ImagelustrationImage} alt="" />
+        </div>
+      </IntroContainer>
       <HomeContainer id="home">
         <div>
-          <h1>Quizes mais recentes</h1>
+          <h1>Quizzes mais recentes</h1>
         </div>
         <div className="main">
           {quizes ? (
@@ -139,7 +172,6 @@ const HomePage: React.FC<IPropsHome> = ({ quizes }) => {
                 header={item.title}
                 itemId={item.id}
                 background={item.img_bg_url}
-                width="350px"
               >
                 <p>{item.title}</p>
                 <span>{item.description}</span>
