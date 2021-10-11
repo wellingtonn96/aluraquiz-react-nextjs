@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import Layout from '../components/Layout'
-import CardQuiz from '../components/CardQuiz'
+import CardForm from '../components/CardForm'
 import { ButtonStyled } from '../components/Button/styled'
 import Link from 'next/link'
 import InputStyled from '../components/InputStyled'
@@ -34,7 +34,7 @@ const SignUpPage: React.FC = () => {
   return (
     <Layout padding={true}>
       <Container>
-        <CardQuiz header="Criar conta" width="450px">
+        <CardForm header="Criar conta">
           <FormContainer>
             <p>CRIE UMA CONTA</p>
             <form onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)} action="">
@@ -75,7 +75,7 @@ const SignUpPage: React.FC = () => {
               </Link>
             </p>
           </FormContainer>
-        </CardQuiz>
+        </CardForm>
       </Container>
     </Layout>
   )

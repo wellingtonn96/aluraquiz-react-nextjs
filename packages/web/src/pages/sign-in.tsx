@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import Layout from '../components/Layout'
-import CardQuiz from '../components/CardQuiz'
+import CardForm from '../components/CardForm'
 import { ButtonStyled } from '../components/Button/styled'
 import { FaLock, FaUser } from 'react-icons/fa'
 import Link from 'next/link'
@@ -27,7 +27,7 @@ const SignInPage: React.FC = () => {
   return (
     <Layout padding={true}>
       <Container>
-        <CardQuiz header="Sign In" width="450px">
+        <CardForm header="Sign In">
           <FormContainer>
             <p>FAÇA SEU LOGIN</p>
             <form onSubmit={handleSubmitQuiz(handleSubmit)}>
@@ -54,7 +54,7 @@ const SignInPage: React.FC = () => {
               </Link>
             </p>
           </FormContainer>
-        </CardQuiz>
+        </CardForm>
       </Container>
     </Layout>
   )

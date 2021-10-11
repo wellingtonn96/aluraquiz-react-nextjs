@@ -3,10 +3,18 @@ import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
 import React from 'react'
 import { ButtonStyled } from '../../../components/Button/styled'
-import CardQuiz from '../../../components/CardQuiz'
+import CardForm from '../../../components/CardForm'
 import Layout from '../../../components/Layout'
 import { getApiClient } from '../../../services/api'
-import { CreateQuizContainer } from '../[id]'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
 
 const UpdateQuestionPage: React.FC<{
   id: string
@@ -28,7 +36,7 @@ const UpdateQuestionPage: React.FC<{
 
   return (
     <Layout padding={true}>
-      <CreateQuizContainer>
+      <Container>
         {
           <>
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
@@ -37,7 +45,7 @@ const UpdateQuestionPage: React.FC<{
             </div>
             {data.questions.map((item, index) => (
               <>
-                <CardQuiz header={`Questão ${index + 1}`}>
+                <CardForm header={`Questão ${index + 1}`}>
                   <p>{item.title}</p>
                   <span>{item.description}</span>
                   <ButtonStyled
@@ -50,12 +58,12 @@ const UpdateQuestionPage: React.FC<{
                   <ButtonStyled onClick={() => deleteQuestion(item.id)}>
                     Remover Questão
                   </ButtonStyled>
-                </CardQuiz>
+                </CardForm>
               </>
             ))}
           </>
         }
-      </CreateQuizContainer>
+      </Container>
     </Layout>
   )
 }
