@@ -2,33 +2,74 @@ import { GetServerSideProps } from 'next'
 import router from 'next/router'
 import { parseCookies } from 'nookies'
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { ButtonStyled } from '../../../components/Button/styled'
-import CardQuiz from '../../../components/CardQuiz'
+import CardForm from '../../../components/CardForm'
 import Layout from '../../../components/Layout'
 import { getApiClient } from '../../../services/api'
-import { CreateQuizContainer } from '../[id]'
-import {
-  InputStyled,
-  TextAreaStyled,
-} from '../../../styles/pages/update/quiz/quiz.styled'
+import styled from 'styled-components'
+import theme from '../../../styles/theme'
+
+export const Container = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  input {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: 0;
+    background: transparent;
+    border: 1px solid ${theme.colors.mainBg};
+    color: ${theme.colors.contrastText};
+    padding: 0 10px;
+    font-size: 18px;
+    margin: 10px 0;
+  }
+
+  textarea {
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    outline: 0;
+    background: transparent;
+    border: 1px solid ${theme.colors.mainBg};
+    color: ${theme.colors.contrastText};
+    padding: 0 10px;
+    font-size: 18px;
+    margin: 10px 0;
+  }
+`
+
+type FormUpdateQuizInputs = {
+  title: string
+  description: string
+  img_bg_url: string
+}
 
 const UpdateQuizPage: React.FC<{
   id: string
   data: any
 }> = ({ data }) => {
-  const { handleSubmit: handleSubmitQuiz, register: registerQuiz } = useForm({
+  const { handleSubmit, register } = useForm({
     mode: 'onBlur',
   })
 
-  const handleSubmitFormQuiz = async dataQuiz => {
+  const onSubmit: SubmitHandler<FormUpdateQuizInputs> = async ({
+    title,
+    img_bg_url,
+    description,
+  }) => {
     try {
       const api = getApiClient()
 
       await api.put(`quiz/${data.id}`, {
-        title: dataQuiz.title_quiz,
-        description: dataQuiz.description_quiz,
-        img_bg_url: dataQuiz.img_bg_url,
+        title,
+        description,
+        img_bg_url,
       })
 
       router.back()
@@ -39,32 +80,28 @@ const UpdateQuizPage: React.FC<{
 
   return (
     <Layout padding={true}>
-      <CreateQuizContainer>
-        <CardQuiz header="Adicione um novo quiz" width="450px">
-          <form
-            key={1}
-            onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)}
-            action=""
-          >
-            <InputStyled
-              {...registerQuiz('title_quiz', { required: true })}
+      <Container>
+        <CardForm header="Adicione um novo quiz">
+          <form key={1} onSubmit={handleSubmit(onSubmit)} action="">
+            <input
+              {...register('title_quiz', { required: true })}
               placeholder="Titulo"
               defaultValue={data.title}
             />
-            <InputStyled
-              {...registerQuiz('img_bg_url', { required: true })}
+            <input
+              {...register('img_bg_url', { required: true })}
               placeholder="URL da imagem de fundo"
               defaultValue={data.img_bg_url}
             />
-            <TextAreaStyled
-              {...registerQuiz('description_quiz', { required: true })}
+            <textarea
+              {...register('description_quiz', { required: true })}
               placeholder="Descrição"
               defaultValue={data.description}
             />
             <ButtonStyled type="submit">Atualizar quiz</ButtonStyled>
           </form>
-        </CardQuiz>
-      </CreateQuizContainer>
+        </CardForm>
+      </Container>
     </Layout>
   )
 }

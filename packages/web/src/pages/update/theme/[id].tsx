@@ -3,38 +3,72 @@ import { getApiClient } from '../../../services/api'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import router from 'next/router'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import Layout from '../../../components/Layout'
-import { CreateQuizContainer } from '../[id]'
-import CardQuiz from '../../../components/CardQuiz'
+import CardForm from '../../../components/CardForm'
 import { ButtonStyled } from '../../../components/Button/styled'
+import styled from 'styled-components'
+import theme from '../../../styles/theme'
+
+export const Container = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  input {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: 0;
+    background: transparent;
+    border: 1px solid ${theme.colors.mainBg};
+    color: ${theme.colors.contrastText};
+    padding: 0 10px;
+    font-size: 18px;
+    margin: 10px 0;
+  }
+`
+
+type FormUpdateThemeInputs = {
+  primary: string
+  mainBg: string
+  wrong: string
+  success: string
+  contrastText: string
+  secondary: string
+}
 
 const UpadateThemePage: React.FC<{
   data: any
 }> = ({ data }) => {
-  const {
-    handleSubmit: handleSubmitTheme,
-    register: registerTheme,
-    reset: resetTheme,
-  } = useForm({
+  const { handleSubmit, register, reset } = useForm({
     mode: 'onBlur',
   })
 
-  const handleSubmitFormTheme = async dataTheme => {
+  const onSubmit: SubmitHandler<FormUpdateThemeInputs> = async ({
+    primary,
+    mainBg,
+    wrong,
+    success,
+    contrastText,
+    secondary,
+  }) => {
     try {
       const api = getApiClient()
 
       await api.put(`themeQuiz/${data.id}`, {
-        primary: dataTheme.primary,
-        mainBg: dataTheme.mainBg,
-        wrong: dataTheme.wrong,
-        success: dataTheme.success,
-        contrastText: dataTheme.contrastText,
-        secondary: dataTheme.secondary,
+        primary,
+        mainBg,
+        wrong,
+        success,
+        contrastText,
+        secondary,
       })
 
       router.back()
-      resetTheme()
+      reset()
     } catch (error) {
       return alert(JSON.stringify({ err: error.message, id: data.id }))
     }
@@ -42,43 +76,43 @@ const UpadateThemePage: React.FC<{
 
   return (
     <Layout padding={true}>
-      <CreateQuizContainer>
-        <CardQuiz header="Crie o tema do quiz" width="450px">
-          <form key={2} onSubmit={handleSubmitTheme(handleSubmitFormTheme)}>
+      <Container>
+        <CardForm header="Crie o tema do quiz">
+          <form key={2} onSubmit={handleSubmit(onSubmit)}>
             <input
-              {...registerTheme('primary', { required: true })}
+              {...register('primary', { required: true })}
               placeholder="Cor primária"
               defaultValue={data.primary}
             />
             <input
-              {...registerTheme('secondary', { required: true })}
+              {...register('secondary', { required: true })}
               placeholder="Cor secondaria"
               defaultValue={data.secondary}
             />
             <input
-              {...registerTheme('mainBg', { required: true })}
+              {...register('mainBg', { required: true })}
               placeholder="Cor de fundo"
               defaultValue={data.mainBg}
             />
             <input
-              {...registerTheme('contrastText', { required: true })}
+              {...register('contrastText', { required: true })}
               placeholder="Cor de contraste do texto"
               defaultValue={data.contrastText}
             />
             <input
-              {...registerTheme('success', { required: true })}
+              {...register('success', { required: true })}
               placeholder="Cor de sucesso"
               defaultValue={data.success}
             />
             <input
-              {...registerTheme('wrong', { required: true })}
+              {...register('wrong', { required: true })}
               placeholder="Cor de erro"
               defaultValue={data.wrong}
             />
-            <ButtonStyled type="submit">Criar tema</ButtonStyled>
+            <ButtonStyled type="submit">Atualizar tema</ButtonStyled>
           </form>
-        </CardQuiz>
-      </CreateQuizContainer>
+        </CardForm>
+      </Container>
     </Layout>
   )
 }

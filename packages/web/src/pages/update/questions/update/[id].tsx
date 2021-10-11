@@ -6,13 +6,13 @@ import { useForm } from 'react-hook-form'
 import { FaCheck, FaPlus, FaTrash } from 'react-icons/fa'
 import Loading from 'react-loading'
 import { ButtonStyled } from '../../../../components/Button/styled'
-import CardQuiz from '../../../../components/CardQuiz'
+import CardForm from '../../../../components/CardForm'
 import Layout from '../../../../components/Layout'
 import { useQuiz } from '../../../../hooks/Quiz'
 
 import { getApiClient } from '../../../../services/api'
 import theme from '../../../../styles/theme'
-import { CreateQuizContainer } from '../../../../styles/pages/update/questions/update/question.styled'
+import { Container } from '../../../../styles/pages/update/questions/update/question.styled'
 
 const QuestionQuizPage: React.FC<{ data: any }> = ({ data }) => {
   const router = useRouter()
@@ -26,10 +26,7 @@ const QuestionQuizPage: React.FC<{ data: any }> = ({ data }) => {
   )
   const [rightAnswer, setRightAnswer] = useState(undefined)
 
-  const {
-    handleSubmit: handleSubmitQuestion,
-    register: registerQuestion,
-  } = useForm({
+  const { handleSubmit, register } = useForm({
     mode: 'onBlur',
   })
 
@@ -41,7 +38,7 @@ const QuestionQuizPage: React.FC<{ data: any }> = ({ data }) => {
     setOption([...option, `option_${item + 1}`])
   }
 
-  const handleSubmitFormQuestions = async dataQuestion => {
+  const onSubmit = async dataQuestion => {
     try {
       const api = getApiClient()
 
@@ -80,21 +77,19 @@ const QuestionQuizPage: React.FC<{ data: any }> = ({ data }) => {
     )
   }
 
-  const { query } = useRouter()
-
   return (
     <Layout padding={true}>
       {data ? (
-        <CreateQuizContainer>
-          <CardQuiz header="Atualizar questão!" width="450px">
-            <form onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}>
+        <Container>
+          <CardForm header="Atualizar questão!">
+            <form onSubmit={handleSubmit(onSubmit)}>
               <input
-                {...registerQuestion('title_question', { required: true })}
+                {...register('title_question', { required: true })}
                 placeholder="Titulo"
                 defaultValue={data.title}
               />
               <input
-                {...registerQuestion('description_question', {
+                {...register('description_question', {
                   required: true,
                 })}
                 placeholder="Descrição"
@@ -104,7 +99,7 @@ const QuestionQuizPage: React.FC<{ data: any }> = ({ data }) => {
                 {option.map((item, index) => (
                   <div className="options">
                     <input
-                      {...registerQuestion(`option_${index}` as any, {
+                      {...register(`option_${index}` as any, {
                         required: true,
                       })}
                       placeholder={`Opção ${index + 1}`}
@@ -155,8 +150,8 @@ const QuestionQuizPage: React.FC<{ data: any }> = ({ data }) => {
               </div>
               <ButtonStyled type="submit">Atualizar questão</ButtonStyled>
             </form>
-          </CardQuiz>
-        </CreateQuizContainer>
+          </CardForm>
+        </Container>
       ) : (
         <Loading />
       )}

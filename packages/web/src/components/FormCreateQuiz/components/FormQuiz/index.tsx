@@ -1,30 +1,36 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import { TextAreaStyled, InputStyled } from './styles'
-import CardQuiz from '../../../../components/CardQuiz'
+import CardForm from '../../../../components/CardForm'
 import { ButtonStyled } from '../../../../components/Button/styled'
+
+type FormCreateQuizInputs = {
+  title: string
+  description: string
+  img_bg_url: string
+}
 
 const FormQuiz: React.FC = () => {
   const { setQuizContext } = useQuiz()
 
-  const {
-    handleSubmit: handleSubmitQuiz,
-    register: registerQuiz,
-    reset: resetQuiz,
-  } = useForm({
+  const { handleSubmit, register, reset } = useForm({
     mode: 'onBlur',
   })
 
-  const handleSubmitFormQuiz = async dataQuiz => {
+  const onSubmit: SubmitHandler<FormCreateQuizInputs> = async ({
+    title,
+    description,
+    img_bg_url,
+  }) => {
     try {
       const api = getApiClient()
 
       const response = await api.post('quiz', {
-        title: dataQuiz.title_quiz,
-        description: dataQuiz.description_quiz,
-        img_bg_url: dataQuiz.img_bg_url,
+        title,
+        description,
+        img_bg_url,
       })
 
       const { id } = response.data
@@ -34,30 +40,31 @@ const FormQuiz: React.FC = () => {
         step: 2,
       })
 
-      resetQuiz()
+      reset()
     } catch (error) {
-      return console.log(error)
+      console.log(error)
+      return alert(JSON.stringify(error.message))
     }
   }
 
   return (
-    <CardQuiz header="Adicione um novo quiz" width="450px">
-      <form key={1} onSubmit={handleSubmitQuiz(handleSubmitFormQuiz)} action="">
+    <CardForm header="Adicione um novo quiz">
+      <form onSubmit={handleSubmit(onSubmit)} action="">
         <InputStyled
-          {...registerQuiz('title_quiz', { required: true })}
+          {...register('title', { required: true })}
           placeholder="Titulo"
         />
         <InputStyled
-          {...registerQuiz('img_bg_url', { required: true })}
+          {...register('img_bg_url', { required: true })}
           placeholder="URL da imagem de fundo"
         />
         <TextAreaStyled
-          {...registerQuiz('description_quiz', { required: true })}
+          {...register('description', { required: true })}
           placeholder="Descrição"
         ></TextAreaStyled>
         <ButtonStyled type="submit">Criar quiz</ButtonStyled>
       </form>
-    </CardQuiz>
+    </CardForm>
   )
 }
 

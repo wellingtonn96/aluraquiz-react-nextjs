@@ -1,11 +1,11 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import { UTILS } from '../../../../constants/utils'
 import styled from 'styled-components'
 import theme from '../../../../styles/theme'
-import CardQuiz from '../../../../components/CardQuiz'
+import CardForm from '../../../../components/CardForm'
 import { ButtonStyled } from '../../../../components/Button/styled'
 
 const InputStyled = styled.input`
@@ -21,33 +21,49 @@ const InputStyled = styled.input`
   margin: 10px 0;
 `
 
-const FormTheme: React.FC = () => {
-  const { quizContext, setQuizContext } = useQuiz()
+type FormThemeInputs = {
+  primary: string
+  mainBg: string
+  wrong: string
+  success: string
+  contrastText: string
+  secondary: string
+}
 
+const FormTheme: React.FC = () => {
   const {
-    handleSubmit: handleSubmitTheme,
-    register: registerTheme,
-    reset: resetTheme,
-  } = useForm({
+    quizContext: { idQuiz },
+    quizContext,
+    setQuizContext,
+  } = useQuiz()
+
+  const { handleSubmit, register, reset } = useForm({
     mode: 'onBlur',
   })
 
-  const handleSubmitFormTheme = async dataTheme => {
+  const onSubmit: SubmitHandler<FormThemeInputs> = async ({
+    primary,
+    mainBg,
+    wrong,
+    success,
+    contrastText,
+    secondary,
+  }) => {
     try {
       const api = getApiClient()
 
       const response = await api.post('themeQuiz', {
-        primary: dataTheme.primary,
-        mainBg: dataTheme.mainBg,
-        wrong: dataTheme.wrong,
-        success: dataTheme.success,
-        contrastText: dataTheme.contrastText,
-        secondary: dataTheme.secondary,
+        primary,
+        mainBg,
+        wrong,
+        success,
+        contrastText,
+        secondary,
       })
 
       const { id } = response.data
 
-      await api.patch(`quiz/${quizContext.idQuiz}`, {
+      await api.patch(`quiz/${idQuiz}`, {
         themeId: id,
       })
 
@@ -55,48 +71,48 @@ const FormTheme: React.FC = () => {
         ...quizContext,
         step: 3,
       })
-      resetTheme()
+      reset()
     } catch (error) {
       return alert(JSON.stringify(error.message))
     }
   }
 
   return (
-    <CardQuiz header="Crie o tema do quiz" width="450px">
-      <form key={2} onSubmit={handleSubmitTheme(handleSubmitFormTheme)}>
+    <CardForm header="Crie o tema do quiz">
+      <form key={2} onSubmit={handleSubmit(onSubmit)}>
         <InputStyled
-          {...registerTheme('primary', { required: true })}
+          {...register('primary', { required: true })}
           placeholder="Cor primária"
           defaultValue={UTILS.theme.colors.primary}
         />
         <InputStyled
-          {...registerTheme('secondary', { required: true })}
+          {...register('secondary', { required: true })}
           placeholder="Cor secondaria"
           defaultValue={UTILS.theme.colors.secondary}
         />
         <InputStyled
-          {...registerTheme('mainBg', { required: true })}
+          {...register('mainBg', { required: true })}
           placeholder="Cor de fundo"
           defaultValue={UTILS.theme.colors.mainBg}
         />
         <InputStyled
-          {...registerTheme('contrastText', { required: true })}
+          {...register('contrastText', { required: true })}
           placeholder="Cor de contraste do texto"
           defaultValue={UTILS.theme.colors.contrastText}
         />
         <InputStyled
-          {...registerTheme('success', { required: true })}
+          {...register('success', { required: true })}
           placeholder="Cor de sucesso"
           defaultValue={UTILS.theme.colors.success}
         />
         <InputStyled
-          {...registerTheme('wrong', { required: true })}
+          {...register('wrong', { required: true })}
           placeholder="Cor de erro"
           defaultValue={UTILS.theme.colors.wrong}
         />
         <ButtonStyled type="submit">Criar tema</ButtonStyled>
       </form>
-    </CardQuiz>
+    </CardForm>
   )
 }
 

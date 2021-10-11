@@ -2,28 +2,22 @@ import React, { useState } from 'react'
 import { FaCheck, FaPlus, FaTrash } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 import theme from '../../../../styles/theme'
-import { useRouter } from 'next/router'
 import { getApiClient } from '../../../../services/api'
 import { useQuiz } from '../../../../hooks/Quiz'
 import { UTILS } from '../../../../constants/utils'
-import CardQuiz from '../../../../components/CardQuiz'
+import CardForm from '../../../../components/CardForm'
 import { ButtonStyled } from '../../../../components/Button/styled'
 import { ButtonMoreOption, InputStyled, OptionsContainer } from './styles'
 
 const FormQuestion: React.FC<{
   handleGoBack(): void
 }> = ({ handleGoBack }) => {
-  const router = useRouter()
   const { setQuizContext, quizContext } = useQuiz()
   const [option, setOption] = useState<string[]>(['option_0', 'option_1'])
   const [indexRightAnswer, setIndexRightAnswer] = useState(undefined)
   const [rightAnswer, setRightAnswer] = useState(undefined)
 
-  const {
-    handleSubmit: handleSubmitQuestion,
-    register: registerQuestion,
-    reset: resetQuestion,
-  } = useForm({
+  const { handleSubmit, register, reset } = useForm({
     mode: 'onBlur',
   })
 
@@ -34,7 +28,7 @@ const FormQuestion: React.FC<{
 
     setOption([...option, `option_${item + 1}`])
   }
-  const handleSubmitFormQuestions = async dataQuestion => {
+  const onSubmit = async data => {
     try {
       !rightAnswer && new Error()
 
@@ -43,17 +37,17 @@ const FormQuestion: React.FC<{
       await api.post('question', {
         image_url:
           'https://thumbs.gfycat.com/IncredibleGrouchyEarwig-size_restricted.gif',
-        title: dataQuestion.title_question,
-        description: dataQuestion.description_question,
-        answer: dataQuestion[rightAnswer],
-        alternatives: option.map(item => dataQuestion[item]),
+        title: data.title_question,
+        description: data.description_question,
+        answer: data[rightAnswer],
+        alternatives: option.map(item => data[item]),
         quizId: quizContext.idQuiz,
       })
 
       setIndexRightAnswer(undefined)
       setRightAnswer(undefined)
       setOption(['option_0', 'option_1'])
-      resetQuestion()
+      reset()
       setQuizContext({
         ...quizContext,
         step: 3,
@@ -85,14 +79,14 @@ const FormQuestion: React.FC<{
   }
 
   return (
-    <CardQuiz header="Criar questões" width="450px">
-      <form onSubmit={handleSubmitQuestion(handleSubmitFormQuestions)}>
+    <CardForm header="Criar questões">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputStyled
-          {...registerQuestion('title_question', { required: true })}
+          {...register('title_question', { required: true })}
           placeholder="Titulo"
         />
         <InputStyled
-          {...registerQuestion('description_question', {
+          {...register('description_question', {
             required: true,
           })}
           placeholder="Descrição"
@@ -101,7 +95,7 @@ const FormQuestion: React.FC<{
           {option.map((item, index) => (
             <OptionsContainer>
               <InputStyled
-                {...registerQuestion(`option_${index}` as any, {
+                {...register(`option_${index}` as any, {
                   required: true,
                 })}
                 placeholder={`Opção ${index + 1}`}
@@ -147,7 +141,7 @@ const FormQuestion: React.FC<{
           Finalizar quiz
         </ButtonStyled>
       </form>
-    </CardQuiz>
+    </CardForm>
   )
 }
 
